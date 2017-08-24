@@ -26,7 +26,7 @@ test('Setting state calls a listener with the new state', t => {
 
     const newState = {count: 1}
     state.listen((newStateReturned)=> t.is(newStateReturned, newState), false)
-    state.setState(newState)
+    state.setState((state) => newState)
 });
 
 test('Unlistening works', t => {
@@ -35,7 +35,7 @@ test('Unlistening works', t => {
     const newState = {count: 1}
     const unlisten = state.listen((newStateReturned)=> t.fail(), false)
     unlisten()
-    state.setState(newState)
+    state.setState((state) => newState)
     t.pass()
 });
 
@@ -44,5 +44,5 @@ test('Listen provides old state too', t => {
 
     const newState = {count: 1}
     state.listen((newStateReturned, oldState)=> t.is(oldState, defaultState), false)
-    state.setState(newState)
+    state.setState((state) => newState)
 });

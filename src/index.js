@@ -17,9 +17,12 @@ export default (defaultState) => {
         }
     }
 
-    function setState(newState) {
+    function setState(reducer) {
+
+        const newState = reducer(state)
+
         listenerList.forEach(callback => callback(newState, state))
-    
+
         state = newState
     }
     
