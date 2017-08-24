@@ -1,9 +1,10 @@
 {
   "name": "lape",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "State manager",
   "main": "./dist/index.js",
   "scripts": {
+    "prepublish": "npm run compile",
     "compile": "babel src -d dist",
     "test": "ava ./**/*.test.js -w"
   },
