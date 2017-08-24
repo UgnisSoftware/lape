@@ -38,3 +38,11 @@ test('Unlistening works', t => {
     state.setState(newState)
     t.pass()
 });
+
+test('Listen provides old state too', t => {
+    const state = lapeSnape(defaultState)
+
+    const newState = {count: 1}
+    state.listen((newStateReturned, oldState)=> t.is(oldState, defaultState), false)
+    state.setState(newState)
+});

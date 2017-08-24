@@ -18,9 +18,9 @@ export default (defaultState) => {
     }
 
     function setState(newState) {
+        listenerList.forEach(callback => callback(newState, state))
+    
         state = newState
-        
-        listenerList.forEach(callback => callback(state))
     }
     
     return {
