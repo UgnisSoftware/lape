@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/masiulis/lape.git"
+    "url": "git+https://github.com/UgnisSoftware/lape.git"
   },
   "author": "Ugnis",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/masiulis/lape/issues"
+    "url": "https://github.com/UgnisSoftware/lape/issues"
   },
-  "homepage": "https://github.com/masiulis/lape#readme",
+  "homepage": "https://github.com/UgnisSoftware/lape#readme",
   "devDependencies": {
     "ava": "^0.22.0",
     "babel-cli": "^6.26.0",
