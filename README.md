@@ -1,5 +1,5 @@
 # lape
-State manager
+Global state manager
 
 ```
 npm install

@@ -1,11 +1,11 @@
 {
   "name": "lape",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "State manager",
   "main": "./dist/index.js",
   "scripts": {
     "prepublish": "npm run compile",
-    "compile": "babel src -d dist",
+    "compile": "babel src -d dist --plugins=transform-remove-strict-mode",
     "test": "ava ./**/*.test.js -w"
   },
   "repository": {
@@ -20,7 +20,8 @@
   "homepage": "https://github.com/masiulis/lape#readme",
   "devDependencies": {
     "ava": "^0.22.0",
-    "babel-cli": "^6.26.0"
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-remove-strict-mode": "0.0.2"
   },
   "ava": {
     "require": [
