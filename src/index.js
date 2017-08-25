@@ -6,7 +6,7 @@ export function listen(callback, shouldCallImmediately = true) {
     listenerList = listenerList.concat(callback)
 
     if(shouldCallImmediately){
-        callback(state)
+        callback(state, state)
     }
 
     // listen usually returns a function that allows a user to stop listening

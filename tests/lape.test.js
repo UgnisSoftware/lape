@@ -56,3 +56,9 @@ test('Listen provides old state too', t => {
     listen((newStateReturned, oldState)=> t.is(oldState, defaultState), false)
     setState(newState)
 });
+
+test('Listen gets currents state as the oldState', t => {
+    setState(defaultState)
+
+    listen((newStateReturned, oldState)=> t.is(oldState, defaultState))
+});
