@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import {state, listen, setState, _reset} from '../src/index';
+import {state, listen, setState, evolveState, _reset} from '../dist/index';
 
 const defaultState = {
     count : 0
@@ -61,4 +61,16 @@ test('Listen gets currents state as the oldState', t => {
     setState(defaultState)
 
     listen((newStateReturned, oldState)=> t.is(oldState, defaultState))
+});
+
+test('EvolveState changes the state', t => {
+    t.is(state, undefined)
+    setState(defaultState)
+    t.is(state, defaultState)
+    evolveState({
+        count: (count) => 10
+    })
+    t.deepEqual(state, {
+        count: 10
+    })
 });

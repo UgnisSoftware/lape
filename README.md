@@ -1,9 +1,8 @@
 # lape
-Global state manager - useful when trying to refactor out of a sticky situations.
+Global state manager.
 
-A simplified mash of Redux and Onionify, based on Lambda calculus.
+A simplified version of ELM/Redux.
 
-Makes all of your code access a single global state:
 
 ```javascript
     import {state, setState, listen} from 'lape'
@@ -19,6 +18,18 @@ Makes all of your code access a single global state:
     }, true)                      // flag for immediate invocation, default is true
 
     setState(2)                   // listen logs 2
+```
+
+
+There is an useful Ramda Evolve + setState shortcut:
+```javascript
+    import {evolveState} from 'lape'
+
+    setState({a: 1})
+
+    evolveState({a: (oldA)=> oldA + 1})
+
+    console.log(state)                      // {a: 2}
 ```
 
 Should be used only with other libraries that derive side effects from state - virtual-dom like React, and something handwritten for fetching, timers and other side effects.

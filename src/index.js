@@ -1,3 +1,4 @@
+import evolve from 'ramda/src/evolve'
 
 export let state;
 
@@ -19,19 +20,18 @@ export function setState(newState) {
 
     const oldState = state
 
-    // change the state to a new one before calling listeners
     state = newState
     
     listenerList.forEach(callback => callback(state, oldState))
 }
 
+
+export function evolveState(evolver) {
+
+    setState(evolve(evolver, state))
+}
+
 export function _reset() {
     listenerList = []
     state = undefined
-}
-
-export default {
-    state,
-    listen,
-    setState,
 }
