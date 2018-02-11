@@ -23,7 +23,7 @@ A simplified version of ELM/Redux.
 
 There is an useful Ramda Evolve + setState shortcut:
 ```javascript
-    import {evolveState} from 'lape'
+    import {state, setState, evolveState} from 'lape'
 
     setState({a: 1})
 
