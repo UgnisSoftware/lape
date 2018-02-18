@@ -1,37 +1,50 @@
 import evolve from 'ramda/src/evolve'
 
-export let state;
+export let _allApps = []
 
-let listenerList = []
-export function listen(callback, shouldCallImmediately = true) {
-    listenerList = listenerList.concat(callback)
+export default (defaultState) => {
 
-    if(shouldCallImmediately){
-        callback(state, state)
+    const appRef = {
+        state: defaultState,
+        evolveState,
+        listen,
+        _reset,
+        _triggerListeners,
     }
-
-    // listen usually returns a function that allows a user to stop listening
-    return function unlisten() {
-        listenerList = listenerList.filter(fn => fn !== callback)
-    }
-}
-
-export function setState(newState) {
-
-    const oldState = state
-
-    state = newState
     
-    listenerList.forEach(callback => callback(state, oldState))
-}
+    _allApps.push(appRef)
 
+    let listenerList = []
+    function listen(callback, shouldCallImmediately = true) {
+        listenerList = listenerList.concat(callback)
 
-export function evolveState(evolver) {
+        if(shouldCallImmediately){
+            callback(appRef.state, appRef.state)
+        }
 
-    setState(evolve(evolver, state))
-}
+        // listen usually returns a function that allows a user to stop listening
+        return function unlisten() {
+            listenerList = listenerList.filter(fn => fn !== callback)
+        }
+    }
 
-export function _reset() {
-    listenerList = []
-    state = undefined
+    function evolveState(evolver) {
+        
+        const oldState = appRef.state
+
+        appRef.state = evolve(evolver, appRef.state);
+
+        listenerList.forEach(callback => callback(appRef.state, oldState))
+    }
+
+    function _reset() {
+        listenerList = []
+        appRef.state = defaultState
+    }
+    
+    function _triggerListeners() {
+        listenerList.forEach(callback => callback(appRef.state, appRef.state))
+    }
+    
+    return appRef
 }

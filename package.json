@@ -1,6 +1,6 @@
 {
   "name": "lape",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "State manager",
   "main": "./dist/index.js",
   "scripts": {
@@ -23,6 +23,7 @@
     "ramda": "^0.25.0"
   },
   "devDependencies": {
+    "@types/ramda": "^0.25.18",
     "ava": "^0.25.0",
     "microbundle": "^0.4.3"
   }
