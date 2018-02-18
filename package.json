@@ -1,8 +1,10 @@
 {
   "name": "lape",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "State manager",
   "main": "./dist/index.js",
+  "jsnext:main": "./src/index.js",
+  "types": "./index.d.ts",
   "scripts": {
     "prepublish": "npm run build",
     "build": "microbundle",
