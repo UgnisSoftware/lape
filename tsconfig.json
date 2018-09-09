@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "es6",
+    "target": "es6",
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": false,
+    "noUnusedLocals": true,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "allowJs": true,
+    "lib": ["es7", "dom"],
+    "baseUrl": ".",
+    "paths": {
+      "@lape": ["src/index"],
+      "@state": ["src/state"],
+    }
+  },
+  "exclude": ["node_modules", "src_old"]
+}

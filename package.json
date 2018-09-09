@@ -5,11 +5,13 @@
   "main": "./dist/index.js",
   "jsnext:main": "./src/index.js",
   "types": "./index.d.ts",
+  "files": [
+    "./dist/index.js",
+    "./dist/index.js.map",
+    "./index.d.ts"
+  ],
   "scripts": {
-    "prepublish": "npm run build",
-    "build": "microbundle",
-    "dev": "microbundle watch",
-    "test": "ava"
+    "start": "webpack-serve ./webpack.config.js --port=3000 --open"
   },
   "repository": {
     "type": "git",
@@ -21,12 +23,20 @@
     "url": "https://github.com/UgnisSoftware/lape/issues"
   },
   "homepage": "https://github.com/UgnisSoftware/lape#readme",
-  "dependencies": {
-    "ramda": "^0.25.0"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@types/ramda": "^0.25.18",
-    "ava": "^0.25.0",
-    "microbundle": "^0.4.3"
+    "@types/react": "^16.4.13",
+    "@types/react-dom": "^16.0.7",
+    "fork-ts-checker-webpack-plugin": "^0.4.9",
+    "prettier": "^1.14.2",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "ts-loader": "^5.0.0",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.3",
+    "webpack": "^4.17.2",
+    "webpack-cli": "^3.1.0",
+    "webpack-serve": "^2.0.2"
   }
 }
