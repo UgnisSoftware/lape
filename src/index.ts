@@ -1,5 +1,7 @@
 import Emitter from "./eventEmitter";
 
+const allProxies = new WeakSet();
+
 const handler = {
   get: (target, prop) => {
     Emitter.triggerGet(target, prop);
@@ -12,17 +14,21 @@ const handler = {
   }
 };
 
-export const proxify = <T>(state: T): T => {
-
-  const state1 = Object.keys(state).reduce((acc, key) => {
-    acc[key] =
-      typeof state[key] === "object"
-        ? proxify(state[key])
-        : state[key];
-    return acc;
-  }, {});
-
-  return new Proxy(state1, handler);
+export const proxify = <T extends object>(state: T): T => {
+  Object.keys(state).forEach(key => {
+    if (allProxies.has(state)) {
+      return;
+    }
+    if (typeof state[key] === "object") {
+      state[key] = proxify(state[key]);
+    }
+  });
+  if (allProxies.has(state)) {
+    return state;
+  }
+  const wrapper = new Proxy(state, handler);
+  allProxies.add(wrapper);
+  return wrapper;
 };
 
 /*

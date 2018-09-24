@@ -4,21 +4,24 @@ import { connect } from "./connect";
 import state from "@state";
 
 const action1 = () => {
+  state.array.concat({ amount: 1233 });
   state.deep.nest = !state.deep.nest;
 };
-const One = connect(() => (
-  <div style={{ margin: 20 }} onClick={action1}>
-    {console.log('one')}
-    {state.deep.nest.toString()}
-  </div>
-));
+const One = connect(() => {
+  return (
+    <div style={{ margin: 20 }} onClick={action1}>
+      {console.log("one", state.deep.nest)}
+      {state.deep.nest.toString()}
+    </div>
+  );
+});
 
 const action2 = () => {
   state.count += 1;
 };
 const Two = connect(() => (
   <div style={{ margin: 20 }} onClick={action2}>
-    {console.log('two')}
+    {console.log("two")}
     {state.count}
   </div>
 ));
