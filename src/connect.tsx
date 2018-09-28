@@ -1,6 +1,7 @@
 import * as React from "react";
 import Emitter, { Callback } from "./eventEmitter";
 
+const a = {};
 export const connect = (Component: React.ComponentType) => {
   class Provider extends React.Component {
     constructor(props) {
@@ -10,27 +11,28 @@ export const connect = (Component: React.ComponentType) => {
 
     sideEffectPhase: boolean;
 
-    tracker: WeakMap<object, string[]> = new WeakMap();
+    trackProp: WeakMap<object, string[]> = new WeakMap();
+    trackAll: WeakSet<object> = new WeakSet();
 
     startTracking = () => {
       Emitter.addGet(this.trackGet);
       this.sideEffectPhase = true;
-      this.tracker = new WeakMap();
-    };
-
-    trackObj = (target, prop) => {
-      const trackedObject = this.tracker.get(target);
-
-      if (trackedObject) {
-        trackedObject.push(prop);
-        return;
-      }
-      this.tracker.set(target, [prop]);
+      this.trackProp = new WeakMap();
     };
 
     trackGet: Callback = (target, prop) => {
       if (this.sideEffectPhase) {
-        this.trackObj(target, prop);
+        if (!prop) {
+          this.trackAll.add(target);
+          return;
+        }
+        const trackedObject = this.trackProp.get(target);
+
+        if (trackedObject && !trackedObject.includes(prop)) {
+          trackedObject.push(prop);
+          return;
+        }
+        this.trackProp.set(target, [prop]);
       }
     };
     trackSet: Callback = (target, prop) => {
@@ -39,9 +41,10 @@ export const connect = (Component: React.ComponentType) => {
           "SET cannot be called while resolving a side effect as it might trigger an infinite loop"
         );
       }
-      const trackedObject = this.tracker.get(target);
-      if (trackedObject && trackedObject.includes(prop)) {
-        this.forceUpdate();
+      const trackedObject = this.trackProp.get(target);
+      const trackedFull = this.trackAll.has(target);
+      if (trackedFull || (trackedObject && trackedObject.includes(prop))) {
+        this.setState(a);
       }
     };
 

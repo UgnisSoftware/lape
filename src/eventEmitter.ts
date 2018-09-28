@@ -1,9 +1,12 @@
-export type Callback = (target: object, prop: string) => void;
+export type Callback = (target: object, prop?: string) => void;
 
 class Emitter {
+  // public - so it could check if anyone is listening to get
   // this emitter calls the last listener and not all of them
-  listenersGet: Callback[] = [];
-  listenersSet: Callback[] = [];
+  public listenersGet: Callback[] = [];
+  // this call every listener
+  public listenersSet: Callback[] = [];
+
   addGet = (callback: Callback) => {
     this.listenersGet.push(callback);
   };
@@ -11,8 +14,10 @@ class Emitter {
     this.listenersGet = this.listenersGet.filter(fn => fn !== callback);
   };
   triggerGet: Callback = (target, prop) => {
-    const currentActiveListener = this.listenersGet[this.listenersGet.length - 1];
-    if(currentActiveListener){
+    if (this.listenersGet.length) {
+      const currentActiveListener = this.listenersGet[
+        this.listenersGet.length - 1
+      ];
       currentActiveListener(target, prop);
     }
   };

@@ -4,12 +4,29 @@ const allProxies = new WeakSet();
 
 const handler = {
   get: (target, prop) => {
-    Emitter.triggerGet(target, prop);
-    return Reflect.get(target, prop);
+    // nobody is listening
+    if (Emitter.listenersGet.length === 0) {
+      return Reflect.get(target, prop);
+    }
+
+    const type = typeof target;
+    if (type === "object") {
+      const isArrayMethod =
+        Array.isArray(target) && (typeof prop === "symbol" || !isNaN(prop));
+      if (isArrayMethod) {
+        Emitter.triggerGet(target);
+        return Reflect.get(target, prop);
+      }
+      Emitter.triggerGet(target, prop);
+      return Reflect.get(target, prop);
+    }
+    if (type === "string" || type === "number" || type === "boolean") {
+      return Reflect.get(target, prop);
+    }
   },
   set: (target, prop, value) => {
-    Emitter.triggerSet(target, prop);
     Reflect.set(target, prop, value);
+    Emitter.triggerSet(target, prop);
     return true;
   }
 };

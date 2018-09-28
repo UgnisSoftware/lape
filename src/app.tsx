@@ -4,35 +4,49 @@ import { connect } from "./connect";
 import state from "@state";
 
 const action1 = () => {
-  state.array.concat({ amount: 1233 });
+  state.array = state.array.concat({ amount: 52234 });
   state.deep.nest = !state.deep.nest;
 };
-const One = connect(() => {
-  return (
-    <div style={{ margin: 20 }} onClick={action1}>
-      {console.log("one", state.deep.nest)}
-      {state.deep.nest.toString()}
-    </div>
-  );
-});
+const One = connect(() => (
+  <div style={{ margin: 20 }} onClick={action1}>
+    {console.log("1 deep")}
+    {state.array.concat({ amount: 1233 }).map(data => (
+      <span>{data.amount} </span>
+    ))}
+    {state.deep.nest.toString()}
+  </div>
+));
 
 const action2 = () => {
   state.count += 1;
 };
 const Two = connect(() => (
   <div style={{ margin: 20 }} onClick={action2}>
-    {console.log("two")}
+    {console.log("2 count")}
     {state.count}
+  </div>
+));
+
+const action3 = () => {
+  state.array.push({ amount: 123 });
+  state.array.unshift({ amount: 123 });
+};
+const Three = connect(() => (
+  <div style={{ margin: 20 }} onClick={action3}>
+    {console.log("3 ARRAY")}
+    {state.array.map((data, i) => (
+      <div key={i}>{data.amount}</div>
+    ))}
   </div>
 ));
 
 class App extends React.Component {
   render() {
-    console.log("app");
     return (
       <div>
         <One />
         <Two />
+        <Three />
       </div>
     );
   }
@@ -40,4 +54,4 @@ class App extends React.Component {
 
 const WrappedApp = connect(App);
 
-ReactDom.render(<WrappedApp />, document.body);
+ReactDom.render(<WrappedApp />, document.getElementById("editor"));
