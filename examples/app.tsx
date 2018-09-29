@@ -1,17 +1,17 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
-import { connect } from "./connect";
-import state from "@state";
+import { connect } from "@lape";
+import state from "./state";
 
 const action1 = () => {
-  state.array = state.array.concat({ amount: 52234 });
+  state.array[0] = { amount: 52234 };
   state.deep.nest = !state.deep.nest;
 };
 const One = connect(() => (
   <div style={{ margin: 20 }} onClick={action1}>
     {console.log("1 deep")}
-    {state.array.concat({ amount: 1233 }).map(data => (
-      <span>{data.amount} </span>
+    {state.array.map((data, i) => (
+      <span key={i}>{data.amount} </span>
     ))}
     {state.deep.nest.toString()}
   </div>

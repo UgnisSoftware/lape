@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "moduleResolution": "node",
     "module": "es6",
     "target": "es6",
@@ -11,12 +12,11 @@
     "noImplicitAny": false,
     "noImplicitThis": false,
     "suppressImplicitAnyIndexErrors": true,
-    "allowJs": true,
     "lib": ["es7", "dom"],
+    "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
       "@lape": ["src/index"],
-      "@state": ["src/state"],
     }
   },
   "exclude": ["node_modules", "src_old"]

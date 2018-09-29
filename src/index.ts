@@ -1,4 +1,5 @@
 import Emitter from "./eventEmitter";
+export { connect } from "./connect";
 
 const allProxies = new WeakSet();
 
@@ -25,6 +26,9 @@ const handler = {
     }
   },
   set: (target, prop, value) => {
+    if (typeof value === "object" && !allProxies.has(value)) {
+      value = proxify(value);
+    }
     Reflect.set(target, prop, value);
     Emitter.triggerSet(target, prop);
     return true;
@@ -48,44 +52,3 @@ export const proxify = <T extends object>(state: T): T => {
   return wrapper;
 };
 
-/*
-    Wrap state in proxy
-
-
-    when rendering a component
-
-      before render set listeners to component
-      every get is registered to that component
-      every set throws (same as using setState in render)
-      after render, return listener to parent
-
-
-   State set outside of render
-      wait for all
-
-
-
-  array and object access should work same as with elvis notation
-
-
-  {
-    count: 0
-  }
-
-  // in side effect stage
-
-  if used without context - warn that the value will not be tracked
-  if context exists:
-    every state.count would add a listener
-    every state.count = 1 would throw error - can't update value as it would trigger a
-
-  // in event phase
-
-    every state.count would return a value and do nothing
-    every state.count = 1 would change the value immediately and mark value to be reconciled in next cycle
-
-  // cycle
-
-  all
-
- */

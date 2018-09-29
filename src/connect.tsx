@@ -2,8 +2,8 @@ import * as React from "react";
 import Emitter, { Callback } from "./eventEmitter";
 
 const a = {};
-export const connect = (Component: React.ComponentType) => {
-  class Provider extends React.Component {
+export const connect = (Component: React.ComponentType): React.ComponentType => {
+  class Connect extends React.Component {
     constructor(props) {
       super(props);
       Emitter.addSet(this.trackSet);
@@ -72,5 +72,5 @@ export const connect = (Component: React.ComponentType) => {
     }
   }
 
-  return Provider;
+  return Connect;
 };
