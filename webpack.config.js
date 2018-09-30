@@ -6,7 +6,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 module.exports = {
     mode: "development",
     devtool: "inline-source-map",
-    entry: "./src/app.tsx",
+    entry: "./examples/app.tsx",
     output: {
         filename: "[name].js",
         path: path.resolve(__dirname, "public"),
@@ -29,7 +29,6 @@ module.exports = {
                     experimentalWatchApi: true,
                 },
                 exclude: /node_modules/,
-                include: path.resolve(__dirname, "src"),
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,

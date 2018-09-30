@@ -13,7 +13,7 @@ const handler = {
     const type = typeof target;
     if (type === "object") {
       const isArrayMethod =
-        Array.isArray(target) && (typeof prop === "symbol" || !isNaN(prop));
+        Array.isArray(target) && (typeof prop === "symbol" || isNaN(prop));
       if (isArrayMethod) {
         Emitter.triggerGet(target);
         return Reflect.get(target, prop);

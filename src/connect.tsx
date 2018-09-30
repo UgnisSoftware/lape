@@ -2,7 +2,9 @@ import * as React from "react";
 import Emitter, { Callback } from "./eventEmitter";
 
 const a = {};
-export const connect = (Component: React.ComponentType): React.ComponentType => {
+export const connect = (
+  Component: React.ComponentType
+): React.ComponentType => {
   class Connect extends React.Component {
     constructor(props) {
       super(props);
@@ -22,13 +24,16 @@ export const connect = (Component: React.ComponentType): React.ComponentType => 
 
     trackGet: Callback = (target, prop) => {
       if (this.sideEffectPhase) {
-        if (!prop) {
+        if (prop === undefined) {
           this.trackAll.add(target);
           return;
         }
         const trackedObject = this.trackProp.get(target);
 
-        if (trackedObject && !trackedObject.includes(prop)) {
+        if (trackedObject) {
+          if (trackedObject.includes(prop)) {
+            return;
+          }
           trackedObject.push(prop);
           return;
         }
