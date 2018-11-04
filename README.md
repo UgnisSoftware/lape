@@ -1,6 +1,6 @@
 # Lape - state manager for React
 
-Simple and memory efficient state manager.
+Simple, Immutable and memory efficient state manager.
 
 Supports only the latest browsers.
 

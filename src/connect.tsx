@@ -30,6 +30,7 @@ export const connect = (
         }
         const trackedObject = this.trackProp.get(target);
 
+        // track prop from target
         if (trackedObject) {
           if (trackedObject.includes(prop)) {
             return;
@@ -38,6 +39,11 @@ export const connect = (
           return;
         }
         this.trackProp.set(target, [prop]);
+
+        // if the prop is object or array, track it too for Object.keys, etc.
+        if (typeof target[prop] === "object") {
+          this.trackGet(target[prop]);
+        }
       }
     };
     trackSet: Callback = (target, prop) => {
