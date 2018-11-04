@@ -25,6 +25,13 @@ const handler = {
       return Reflect.get(target, prop);
     }
   },
+  ownKeys: target => {
+    if (Emitter.listenersGet.length === 0) {
+      return Reflect.ownKeys(target);
+    }
+    Emitter.triggerGet(target);
+    return Reflect.ownKeys(target);
+  },
   set: (target, prop, value) => {
     if (typeof value === "object" && !allProxies.has(value)) {
       value = proxify(value);
@@ -51,4 +58,3 @@ export const proxify = <T extends object>(state: T): T => {
   allProxies.add(wrapper);
   return wrapper;
 };
-

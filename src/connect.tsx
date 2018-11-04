@@ -1,6 +1,15 @@
 import * as React from "react";
 import Emitter, { Callback } from "./eventEmitter";
 
+interface HackProps {
+  bestHackEver: () => void;
+}
+
+const StopTracking = ({ bestHackEver }: HackProps) => {
+  bestHackEver();
+  return null;
+};
+
 const a = {};
 export const connect = (
   Component: React.ComponentType
@@ -23,6 +32,7 @@ export const connect = (
     };
 
     trackGet: Callback = (target, prop) => {
+      console.log(prop);
       if (this.sideEffectPhase) {
         if (prop === undefined) {
           this.trackAll.add(target);
@@ -39,11 +49,6 @@ export const connect = (
           return;
         }
         this.trackProp.set(target, [prop]);
-
-        // if the prop is object or array, track it too for Object.keys, etc.
-        if (typeof target[prop] === "object") {
-          this.trackGet(target[prop]);
-        }
       }
     };
     trackSet: Callback = (target, prop) => {
@@ -64,22 +69,18 @@ export const connect = (
       this.sideEffectPhase = false;
     };
 
-    componentDidMount() {
-      this.stopTracking();
-    }
-
-    componentDidUpdate() {
-      this.stopTracking();
-    }
-
     componentWillUnmount() {
-      Emitter.removeGet(this.trackGet);
       Emitter.removeSet(this.trackSet);
     }
 
     render() {
       this.startTracking();
-      return <Component {...this.props} />;
+      return (
+        <>
+          <Component {...this.props} />
+          <StopTracking bestHackEver={this.stopTracking} />
+        </>
+      );
     }
   }
 
