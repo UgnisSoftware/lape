@@ -12,7 +12,6 @@ class Emitter {
   };
   removeGet = (callback: Callback) => {
     this.listenersGet = this.listenersGet.filter(fn => fn !== callback);
-    console.log(this.listenersGet)
   };
   triggerGet: Callback = (target, prop) => {
     if (this.listenersGet.length) {

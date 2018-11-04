@@ -32,7 +32,6 @@ export const connect = (
     };
 
     trackGet: Callback = (target, prop) => {
-      console.log(prop);
       if (this.sideEffectPhase) {
         if (prop === undefined) {
           this.trackAll.add(target);
