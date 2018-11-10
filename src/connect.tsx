@@ -1,5 +1,5 @@
 import * as React from "react";
-import Emitter, { Callback } from "./eventEmitter";
+import Emitter, {BatchCallback, Callback, Data} from "./eventEmitter";
 
 interface HackProps {
   bestHackEver: () => void;
@@ -50,17 +50,20 @@ export const connect = (
         this.trackProp.set(target, [prop]);
       }
     };
-    trackSet: Callback = (target, prop) => {
+    trackSet: BatchCallback = (data: Data[]) => {
       if (this.sideEffectPhase) {
         throw new Error(
           "SET cannot be called while resolving a side effect as it might trigger an infinite loop"
         );
       }
-      const trackedObject = this.trackProp.get(target);
-      const trackedFull = this.trackAll.has(target);
-      if (trackedFull || (trackedObject && trackedObject.includes(prop))) {
-        this.setState(a);
-      }
+
+      data.forEach(({target, prop}) => {
+        const trackedObject = this.trackProp.get(target);
+        const trackedFull = this.trackAll.has(target);
+        if (trackedFull || (trackedObject && trackedObject.includes(prop))) {
+          this.setState(a);
+        }
+      })
     };
 
     stopTracking = () => {
