@@ -10,11 +10,10 @@ const StopTracking = ({ bestHackEver }: HackProps) => {
   return null;
 };
 
-const a = {};
 export const connect = (
   Component: React.ComponentType
 ): React.ComponentType => {
-  class Connect extends React.Component {
+  class Connect extends React.PureComponent {
     constructor(props) {
       super(props);
       Emitter.addSet(this.trackSet);
@@ -61,7 +60,7 @@ export const connect = (
         const trackedObject = this.trackProp.get(target);
         const trackedFull = this.trackAll.has(target);
         if (trackedFull || (trackedObject && trackedObject.includes(prop))) {
-          this.setState(a);
+          this.forceUpdate();
         }
       })
     };
