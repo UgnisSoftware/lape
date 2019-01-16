@@ -11,7 +11,7 @@ const handler = {
     }
 
     const type = typeof target;
-    if (type === "object") {
+    if (type === "object" && target !== null) {
       const isArrayMethod =
         Array.isArray(target) && (typeof prop === "symbol" || isNaN(prop));
       if (isArrayMethod) {
@@ -33,7 +33,7 @@ const handler = {
     return Reflect.ownKeys(target);
   },
   set: (target, prop, value) => {
-    if (typeof value === "object" && !allProxies.has(value)) {
+    if (typeof value === "object" && value !== null && !allProxies.has(value)) {
       value = proxify(value);
     }
     Reflect.set(target, prop, value);
@@ -47,7 +47,7 @@ export const proxify = <T extends object>(state: T): T => {
     if (allProxies.has(state)) {
       return;
     }
-    if (typeof state[key] === "object") {
+    if (typeof state[key] === "object" && state[key] !== null) {
       state[key] = proxify(state[key]);
     }
   });
