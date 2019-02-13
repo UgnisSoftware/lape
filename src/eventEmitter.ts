@@ -1,10 +1,19 @@
 export interface Data {
-  target: object;
-  prop: string;
+  props: string[];
+  receiver: object;
+  previous: object;
+  next: object;
 }
 
-export type BatchCallback = (data: Data[]) => void;
+export type BatchCallback = (data: Map<object, Data>) => void;
 export type Callback = (target: object, prop?: string) => void;
+export type SetCallback = (
+  target: object,
+  prop: string,
+  receiver: any,
+  previous: object,
+  next: object
+) => void;
 
 class Emitter {
   // public - so it could check if anyone is listening to get
@@ -35,9 +44,15 @@ class Emitter {
   };
 
   timeout = null;
-  dataChanged = [];
-  triggerSet: Callback = (target, prop) => {
-    this.dataChanged.push({ target, prop });
+  dataChanged: Map<object, Data> = new Map();
+  triggerSet: SetCallback = (target, prop, receiver, previous, next) => {
+    if (!this.dataChanged.has(target)) {
+      this.dataChanged.set(target, { props: [prop], receiver, previous, next });
+    } else {
+      const cachedTarget = this.dataChanged.get(target)
+      cachedTarget.props.push(prop);
+      cachedTarget.next = next;
+    }
 
     if (this.timeout) {
       return;
@@ -48,7 +63,7 @@ class Emitter {
 
       // reset
       this.timeout = null;
-      this.dataChanged = [];
+      this.dataChanged = new Map();
     }, 0);
   };
 }

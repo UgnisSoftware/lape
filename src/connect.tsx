@@ -49,17 +49,17 @@ export const connect = (
         this.trackProp.set(target, [prop]);
       }
     };
-    trackSet: BatchCallback = (data: Data[]) => {
+    trackSet: BatchCallback = (data: Map<object, Data>) => {
       if (this.sideEffectPhase) {
         throw new Error(
           "SET cannot be called while resolving a side effect as it might trigger an infinite loop"
         );
       }
 
-      data.forEach(({target, prop}) => {
+      data.forEach(({props}, target) => {
         const trackedObject = this.trackProp.get(target);
         const trackedFull = this.trackAll.has(target);
-        if (trackedFull || (trackedObject && trackedObject.includes(prop))) {
+        if (trackedFull || (trackedObject && trackedObject.some((tracked) => props.includes(tracked)))) {
           this.forceUpdate();
         }
       })

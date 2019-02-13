@@ -1,6 +1,6 @@
 {
   "name": "lape",
-  "version": "4.1.3",
+  "version": "4.2.0",
   "description": "State manager",
   "main": "./dist/lape.js",
   "types": "./dist/index.d.ts",
