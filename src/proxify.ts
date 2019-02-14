@@ -1,6 +1,7 @@
 import Emitter from "./eventEmitter";
 
 const allProxies = new WeakSet();
+const allProxiesMap = new WeakMap();
 
 const handler = {
   get: (target, prop) => {
@@ -40,6 +41,13 @@ const handler = {
     const next = Array.isArray(target) ? target.slice() : { ...target };
     Emitter.triggerSet(target, prop, receiver, previous, next);
     return true;
+  },
+  deleteProperty(target, prop) {
+    const previous = Array.isArray(target) ? target.slice() : { ...target };
+    Reflect.deleteProperty(target, prop);
+    const next = Array.isArray(target) ? target.slice() : { ...target };
+    Emitter.triggerSet(target, prop, allProxiesMap.get(target), previous, next);
+    return true;
   }
 };
 
@@ -57,5 +65,6 @@ export const proxify = <T extends object>(state: T): T => {
   }
   const wrapper = new Proxy(state, handler);
   allProxies.add(wrapper);
+  allProxiesMap.set(state, wrapper);
   return wrapper;
 };

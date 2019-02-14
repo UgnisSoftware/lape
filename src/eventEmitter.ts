@@ -49,7 +49,7 @@ class Emitter {
     if (!this.dataChanged.has(target)) {
       this.dataChanged.set(target, { props: [prop], receiver, previous, next });
     } else {
-      const cachedTarget = this.dataChanged.get(target)
+      const cachedTarget = this.dataChanged.get(target);
       cachedTarget.props.push(prop);
       cachedTarget.next = next;
     }
