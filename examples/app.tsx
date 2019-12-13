@@ -4,8 +4,7 @@ import { connect } from "@lape";
 import state from "./state";
 
 const action1 = () => {
-  state.array[0] = { amount: 52234 };
-  state.deep.nest = !state.deep.nest;
+  state.count += 1;
 };
 const One = connect(() => (
   <div style={{ margin: 20 }} onClick={action1}>
@@ -20,22 +19,35 @@ const One = connect(() => (
 const action2 = () => {
   state.count += 1;
 };
-const Two = connect(() => (
-  <div style={{ margin: 20 }} onClick={action2}>
-    {console.log("2 count")}
-    {state.count}
-  </div>
-));
+const Two = connect(
+  () =>
+    console.log("asdasdasdasd") ||
+    (state.array.length % 2 ? (
+      <div style={{ margin: 20 }} onClick={action2}>
+        {console.log("2 count")}
+        {state.count}
+      </div>
+    ) : null)
+);
 
 const action3 = () => {
+  // state.array.unshift({ amount: 123 });
   state.array.push({ amount: 123 });
-  state.array.unshift({ amount: 123 });
 };
 const Three = connect(() => (
-  <div style={{ margin: 20 }} onClick={action3}>
+  <div style={{ margin: 20 }}>
     {console.log("3 ARRAY")}
     {state.array.map((data, i) => (
-      <div key={i}>{data.amount}</div>
+      <div key={i}>
+        <div onClick={action3}>{data.amount}</div>
+        <span
+          onClick={() => {
+            state.array.splice(i, 1);
+          }}
+        >
+          x
+        </span>
+      </div>
     ))}
   </div>
 ));
