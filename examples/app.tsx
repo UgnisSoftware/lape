@@ -32,8 +32,8 @@ const Two = connect(
 );
 
 const action3 = () => {
-  // state.array.unshift({ amount: 123 });
-  state.array.push({ amount: 123 });
+  state.array.unshift({ amount: 123 });
+  // state.array.push({ amount: 123 });
   // state.array = [{ amount: 123 }, { amount: 1111 }]
 };
 const Three = connect(() => (
@@ -65,10 +65,10 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <Undo />
         <One />
         <Two />
         <Three />
-        <Undo />
       </div>
     );
   }

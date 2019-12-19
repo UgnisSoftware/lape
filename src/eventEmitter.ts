@@ -3,9 +3,9 @@ import { proxify, trackAll } from "./proxify";
 class Emitter {
   stateDependencies = new Map();
   recordingQueue = [];
-  actionTriggered = false;
   actionQueue = [];
-  actionIndex = undefined;
+  timeout = null;
+  actionIndex = null;
   mapStateToComponents = (target: object, prop: string | symbol) => {
     if (!this.recordingQueue.length) {
       return;
@@ -75,87 +75,67 @@ class Emitter {
       });
   };
   recordAction = (target, prop) => {
-    if (!this.actionTriggered) {
-      this.actionTriggered = true;
-      this.actionQueue.push({
-        target,
-        prop,
-        undo: Array.isArray(target) ? [...target] : { ...target }
-      });
-      setTimeout(() => {
-        this.actionTriggered = false;
-      });
+    const action = {
+      target,
+      undo: Array.isArray(target) ? [...target] : { ...target },
+      prop
+    };
+    if (!this.timeout) {
+      this.timeout = setTimeout(() => (this.timeout = null));
+      this.actionQueue.push([action]);
+    } else {
+      const i = this.actionQueue.length - 1;
+      this.actionQueue[i].push(action);
     }
   };
 
   undo = () => {
-    if (!this.actionQueue.length) {
+    if (this.actionIndex === null) {
+      this.actionIndex = this.actionQueue.length - 1;
+    }
+    if (!this.actionQueue[this.actionIndex]) {
       return;
     }
-    const index =
-      this.actionIndex || this.actionIndex === 0
-        ? this.actionIndex
-        : this.actionQueue.length - 1;
-    const { target, prop, undo } = this.actionQueue[index];
-    this.actionQueue[index].redo = Array.isArray(target)
-      ? [...target]
-      : { ...target };
-    // Proxy is not triggered here
-    if (
-      undo[prop] ||
-      typeof undo[prop] === "number" ||
-      typeof undo[prop] === "boolean"
-    ) {
-      target[prop] =
-        typeof undo[prop] === "object" ? proxify(undo[prop]) : undo[prop];
-    } else {
-      const arrayShortened =
-        Array.isArray(target) && target.length !== undo.length;
-      if (arrayShortened) {
-        target.length = undo.length;
+    this.actionQueue[this.actionIndex].forEach(action => {
+      const { target, undo, prop } = action;
+      action.redo = Array.isArray(target) ? [...target] : { ...target };
+      if (
+        undo[prop] ||
+        typeof undo[prop] === "number" ||
+        typeof undo[prop] === "boolean"
+      ) {
+        target[prop] =
+          typeof undo[prop] === "object" ? proxify(undo[prop]) : undo[prop];
+      } else {
+        delete target[prop];
       }
-      delete target[prop];
-    }
-    this.actionIndex = index - 1;
-    this.renderComponents(target, prop, false);
+      this.renderComponents(target, prop, false);
+    });
+    this.actionIndex -= 1;
   };
   redo = () => {
-    if (
-      this.actionIndex === undefined ||
-      this.actionIndex >= this.actionQueue.length - 1
-    ) {
+    if (!this.actionQueue[this.actionIndex + 1]) {
       return;
     }
-    const index = this.actionIndex + 1;
-    const { target, prop, redo } = this.actionQueue[index];
-    if (
-      redo[prop] ||
-      typeof redo[prop] === "number" ||
-      typeof redo[prop] === "boolean"
-    ) {
-      target[prop] =
-        typeof redo[prop] === "object" ? proxify(redo[prop]) : redo[prop];
-    } else {
-      const arrayShortened =
-        Array.isArray(target) && target.length !== redo.length;
-      if (arrayShortened) {
-        target.length = redo.length;
+    this.actionIndex += 1;
+    this.actionQueue[this.actionIndex].forEach(action => {
+      const { target, redo, prop } = action;
+      if (
+        redo[prop] ||
+        typeof redo[prop] === "number" ||
+        typeof redo[prop] === "boolean"
+      ) {
+        target[prop] =
+          typeof redo[prop] === "object" ? proxify(redo[prop]) : redo[prop];
+      } else {
+        delete target[prop];
       }
-      delete target[prop];
-    }
-    this.actionIndex = index - 1;
-    this.renderComponents(target, prop, false);
-
-    this.actionIndex = index;
+      this.renderComponents(target, prop, false);
+    });
   };
   resetActionQueue = () => {
-    if (
-      this.actionQueue.length &&
-      (this.actionIndex || this.actionIndex === 0)
-    ) {
-      this.actionQueue.length = this.actionIndex + 1;
-    }
-    this.actionIndex = undefined;
+    // this.actionQueue.splice(this.actionIndex+1);
+    this.actionIndex = null;
   };
 }
 
