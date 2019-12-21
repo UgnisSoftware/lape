@@ -3,6 +3,7 @@ import { proxify, trackAll } from "./proxify";
 class Emitter {
   stateDependencies = new Map();
   recordingQueue = [];
+  actionQueueLimit = 30;
   actionQueue = [];
   timeout = null;
   actionIndex = null;
@@ -50,8 +51,8 @@ class Emitter {
         callback();
       });
     if (shouldTrackActions) {
-      this.recordAction(target, prop);
       this.resetActionQueue();
+      this.recordAction(target, prop);
     }
   };
   removeCache = (callback: () => void) => {
@@ -62,6 +63,7 @@ class Emitter {
     );
   };
   deleteProperty = (target, prop) => {
+    this.recordAction(target, prop);
     if (this.stateDependencies.get(target).has(prop)) {
       const callbacks = this.stateDependencies.get(target).get(prop);
       this.stateDependencies.get(target).delete(prop);
@@ -75,6 +77,7 @@ class Emitter {
       });
   };
   recordAction = (target, prop) => {
+    this.trimActionQueue();
     const action = {
       target,
       undo: Array.isArray(target) ? [...target] : { ...target },
@@ -88,7 +91,11 @@ class Emitter {
       this.actionQueue[i].push(action);
     }
   };
-
+  trimActionQueue = () => {
+    if (this.actionQueue.length === this.actionQueueLimit) {
+      this.actionQueue.shift();
+    }
+  };
   undo = () => {
     if (this.actionIndex === null) {
       this.actionIndex = this.actionQueue.length - 1;
@@ -107,6 +114,9 @@ class Emitter {
         target[prop] =
           typeof undo[prop] === "object" ? proxify(undo[prop]) : undo[prop];
       } else {
+        if (Array.isArray(target) && undo.length !== target.length) {
+          target.length = undo.length;
+        }
         delete target[prop];
       }
       this.renderComponents(target, prop, false);
@@ -114,9 +124,11 @@ class Emitter {
     this.actionIndex -= 1;
   };
   redo = () => {
-    if (!this.actionQueue[this.actionIndex + 1]) {
+    if (this.actionIndex === null || !this.actionQueue[this.actionIndex + 1]) {
       return;
     }
+    console.log('redo', this.actionQueue, this.actionIndex);
+    console.log('this.actionQueue[this.actionIndex + 1]', this.actionQueue[this.actionIndex + 1], this.actionIndex + 1);
     this.actionIndex += 1;
     this.actionQueue[this.actionIndex].forEach(action => {
       const { target, redo, prop } = action;
@@ -128,13 +140,18 @@ class Emitter {
         target[prop] =
           typeof redo[prop] === "object" ? proxify(redo[prop]) : redo[prop];
       } else {
+        if (Array.isArray(target) && redo.length !== target.length) {
+          target.length = redo.length;
+        }
         delete target[prop];
       }
       this.renderComponents(target, prop, false);
     });
   };
   resetActionQueue = () => {
-    // this.actionQueue.splice(this.actionIndex+1);
+    if (this.actionIndex !== null) {
+      this.actionQueue.splice(this.actionIndex + 1);
+    }
     this.actionIndex = null;
   };
 }

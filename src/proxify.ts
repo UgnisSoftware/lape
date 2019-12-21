@@ -17,12 +17,12 @@ const handler = {
   },
   set: (target, prop, value) => {
     const valueIsObject = typeof value === "object" && value !== null;
-
     if (valueIsObject) {
       value = proxify(value);
     }
-
-    Emitter.renderComponents(target, prop);
+    if(!(prop === 'length' && value === target[prop])){
+      Emitter.renderComponents(target, prop);
+    }
     return Reflect.set(target, prop, value);
   },
   ownKeys: target => {

@@ -20,16 +20,12 @@ const One = connect(() => (
 const action2 = () => {
   state.count += 1;
 };
-const Two = connect(
-  () =>
-    console.log("asdasdasdasd") ||
-    (state.array.length % 2 ? (
-      <div style={{ margin: 20 }} onClick={action2}>
-        {console.log("2 count")}
-        {state.count}
-      </div>
-    ) : null)
-);
+const Two = connect(() => (
+  <div style={{ margin: 20 }} onClick={action2}>
+    {console.log("2 count")}
+    {state.count}
+  </div>
+));
 
 const action3 = () => {
   state.array.unshift({ amount: 123 });
