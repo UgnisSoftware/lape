@@ -16,7 +16,7 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "@lape": ["src/index"],
+      "@lape": ["src/index"]
     }
   },
   "exclude": ["node_modules"]
