@@ -1,11 +1,11 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
-import { connect } from "@lape";
+import { connect, Emitter } from "@lape";
 import state from "./state";
 
 const action1 = () => {
-  state.array[0] = { amount: 52234 };
   state.deep.nest = !state.deep.nest;
+  state.array[0] = { amount: 52234 };
 };
 const One = connect(() => (
   <div style={{ margin: 20 }} onClick={action1}>
@@ -28,22 +28,40 @@ const Two = connect(() => (
 ));
 
 const action3 = () => {
-  state.array.push({ amount: 123 });
   state.array.unshift({ amount: 123 });
+  // state.array.push({ amount: 123 });
+  // state.array = [{ amount: 123 }, { amount: 1111 }]
 };
 const Three = connect(() => (
-  <div style={{ margin: 20 }} onClick={action3}>
+  <div style={{ margin: 20 }}>
     {console.log("3 ARRAY")}
     {state.array.map((data, i) => (
-      <div key={i}>{data.amount}</div>
+      <div key={i}>
+        <div onClick={action3}>{data.amount}</div>
+        <span
+          onClick={() => {
+            state.array.splice(i, 1);
+          }}
+        >
+          x
+        </span>
+      </div>
     ))}
   </div>
 ));
 
+const Undo = () => (
+  <div>
+    <span onClick={Emitter.undo}>{" <="}</span>
+    <span>{"      "}</span>
+    <span onClick={Emitter.redo}>=></span>
+  </div>
+);
 class App extends React.Component {
   render() {
     return (
       <div>
+        <Undo />
         <One />
         <Two />
         <Three />
