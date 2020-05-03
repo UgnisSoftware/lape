@@ -2,9 +2,10 @@
   "compilerOptions": {
     "declaration": true,
     "moduleResolution": "node",
-    "module": "es6",
+    "module": "esnext",
     "target": "es6",
     "jsx": "react",
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "noUnusedParameters": true,
     "noImplicitReturns": false,
@@ -19,5 +20,6 @@
       "@lape": ["src/index"]
     }
   },
+  "include": ["src", "examples"],
   "exclude": ["node_modules"]
 }

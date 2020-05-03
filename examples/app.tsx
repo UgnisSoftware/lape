@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
-import { connect, Emitter } from "@lape";
+import { connect, Emitter, useLape } from "@lape";
 import state from "./state";
 
 const action1 = () => {
@@ -50,6 +50,25 @@ const Three = connect(() => (
   </div>
 ));
 
+const Four = () => {
+  const localState = useLape({
+    count: 1,
+  });
+
+  const onClick = () => {
+    localState.count = localState.count + 1;
+    localState.count = localState.count + 1;
+    localState.count = localState.count + 1;
+  };
+
+  return (
+    <div style={{ margin: 20 }}>
+      {console.log("4 Local")}
+      <div onClick={onClick}>{localState.count}</div>
+    </div>
+  );
+};
+
 const Undo = () => (
   <div>
     <span onClick={Emitter.undo}>{" <="}</span>
@@ -57,6 +76,7 @@ const Undo = () => (
     <span onClick={Emitter.redo}>=></span>
   </div>
 );
+
 class App extends React.Component {
   render() {
     return (
@@ -65,6 +85,7 @@ class App extends React.Component {
         <One />
         <Two />
         <Three />
+        <Four />
       </div>
     );
   }

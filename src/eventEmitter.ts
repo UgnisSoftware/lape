@@ -127,8 +127,6 @@ class Emitter {
     if (this.actionIndex === null || !this.actionQueue[this.actionIndex + 1]) {
       return;
     }
-    console.log('redo', this.actionQueue, this.actionIndex);
-    console.log('this.actionQueue[this.actionIndex + 1]', this.actionQueue[this.actionIndex + 1], this.actionIndex + 1);
     this.actionIndex += 1;
     this.actionQueue[this.actionIndex].forEach(action => {
       const { target, redo, prop } = action;
