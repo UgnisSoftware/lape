@@ -1,0 +1,25 @@
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="300"
+   viewBox="0 0 37 37"
+   height="300">
+  <g transform="translate(4 0) scale(1.2 1)">
+    <g>
+      <path style="fill:#e57e25"
+         d="M 12.5,12 1.8,17 0,0 Z" />
+      <path style="fill:#e57e25"
+         d="M 25,0 23.2,17 12.5,12 Z" />
+    </g>
+    <path
+       style="fill:#ecf0f1"
+       d="M 23,19 12.5,37 2,19 12.5,14 Z" />
+    <path
+       style="fill:#f29c1f;stroke:#f29c1f;stroke-width:0.4"
+       d="M 23,17 12.5,35 2,17 12.5,12 Z" />
+    <path
+       id="path3730"
+       d="m 12.5,35 1.5,-2.5 h -3 z"
+       style="fill:#2b0000;fill-rule:evenodd" />
+  </g>
+</svg>
