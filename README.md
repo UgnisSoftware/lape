@@ -1,6 +1,6 @@
 # Lape - state manager for React
 
-Simple, Immutable and memory efficient state manager.
+Simple, mutable, memory efficient state manager built on Proxies.
 
 Supports only the latest browsers.
 
@@ -29,6 +29,7 @@ Supports only the latest browsers.
 
 ```typescript
   // APP.tsx
+  import { connect } from "lape";
   import state from '@state' // using ts paths here
 
   const action = () => {
