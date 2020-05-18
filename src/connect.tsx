@@ -1,12 +1,12 @@
 import React from "react";
 import Emitter from "./eventEmitter";
 
-interface HackProps {
-  bestHackEver: () => void;
+interface StopTrackingProps {
+  stopTracking: () => void;
 }
 
-const StopTracking = ({ bestHackEver }: HackProps) => {
-  bestHackEver();
+const StopTracking = ({ stopTracking }: StopTrackingProps) => {
+  stopTracking();
   return null;
 };
 
@@ -28,7 +28,7 @@ export const connect = (
       return (
         <>
           <Component {...this.props} />
-          <StopTracking bestHackEver={this.stopTracking} />
+          <StopTracking stopTracking={this.stopTracking} />
         </>
       );
     }

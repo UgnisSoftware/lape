@@ -1,4 +1,4 @@
-import { proxify } from "@lape";
+import { lape } from "@lape";
 
 interface arr {
   amount: number;
@@ -24,4 +24,4 @@ const defaultState: State = {
   ]
 };
 
-export default proxify(defaultState);
+export default lape(defaultState);
