@@ -73,7 +73,7 @@ const Undo = () => (
   <div>
     <span onClick={Emitter.undo}>{" <="}</span>
     <span>{"      "}</span>
-    <span onClick={Emitter.redo}>=></span>
+    <span onClick={Emitter.redo}>{"=>"}</span>
   </div>
 );
 

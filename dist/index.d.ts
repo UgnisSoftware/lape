@@ -1,3 +1,4 @@
 export { default as Emitter } from "./eventEmitter";
 export { connect } from "./connect";
-export declare const proxify: <T extends object>(state: T) => T;
+export { proxify as lape } from "./proxify";
+export { useLape } from "./hook";

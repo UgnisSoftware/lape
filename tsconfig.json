@@ -2,7 +2,7 @@
   "compilerOptions": {
     "declaration": true,
     "moduleResolution": "node",
-    "module": "esnext",
+    "module": "es6",
     "target": "es6",
     "jsx": "react",
     "esModuleInterop": true,
@@ -15,11 +15,8 @@
     "suppressImplicitAnyIndexErrors": true,
     "lib": ["es7", "dom"],
     "outDir": "./dist",
-    "baseUrl": ".",
-    "paths": {
-      "@lape": ["src/index"]
-    }
+    "baseUrl": "."
   },
-  "include": ["src", "examples"],
+  "include": ["src"],
   "exclude": ["node_modules"]
 }
