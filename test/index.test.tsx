@@ -13,6 +13,7 @@ function HiddenMessage({ children }) {
         onChange={(e) => setShowMessage(e.target.checked)}
         checked={showMessage}
       />
+        {add bug}
       {showMessage ? children : null}
     </div>
   );
