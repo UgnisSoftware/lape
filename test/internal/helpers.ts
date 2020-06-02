@@ -1,4 +1,4 @@
-import { lape } from "../../src";
+import { lape, resetUndoStack } from "../../src";
 
 interface arr {
   amount: number;
@@ -20,6 +20,8 @@ interface State {
 }
 
 export const createNewState = () => {
+  resetUndoStack();
+
   const defaultState: State = {
     count: 0,
     deep: {

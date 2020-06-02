@@ -1,5 +1,5 @@
 import { createNewState } from "./helpers";
-import { canRedo, canUndo, recordUndo, redo, undo } from "../../src/undo/undo";
+import { canRedo, canUndo, recordUndo, redo, undo } from "../../src";
 
 describe("Undo and Redo basic functionality", () => {
   test("it works for simple state", () => {
@@ -99,6 +99,20 @@ describe("Undo and Redo basic functionality", () => {
     redo();
     expect(state.array.length).toBe(3);
     expect(state.array[0]).toStrictEqual(newObj);
+  });
+
+  test("it works for array SHIFT", () => {
+    const state = createNewState();
+
+    recordUndo(() => {
+      state.array.shift();
+    });
+
+    expect(state.array.length).toBe(1);
+    undo();
+    expect(state.array.length).toBe(2);
+    redo();
+    expect(state.array.length).toBe(1);
   });
 
   test("it works for array FILL", () => {

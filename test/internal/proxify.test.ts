@@ -403,7 +403,7 @@ describe("EventEmitter set listeners", () => {
     Emitter.removeSetListener(mockListener);
 
     expect(mockListener).toHaveBeenCalledTimes(1);
-    expect(mockListener).toHaveBeenCalledWith(state.array, "1", newObj);
+    expect(mockListener).toHaveBeenCalledWith(state.array, "2", newObj);
   });
 
   test("it triggers set event listeners for setting array UNSHIFT", () => {
@@ -418,11 +418,10 @@ describe("EventEmitter set listeners", () => {
 
     Emitter.removeSetListener(mockListener);
 
-    expect(mockListener).toHaveBeenCalledTimes(2);
-    expect(mockListener).toHaveBeenNthCalledWith(1, state.array, "1", {
-      amount: 1,
-    });
-    expect(mockListener).toHaveBeenNthCalledWith(2, state.array, "0", newObj);
+    expect(mockListener).toHaveBeenCalledTimes(3);
+    expect(mockListener).toHaveBeenNthCalledWith(1, state.array, "2", { amount: 2 });
+    expect(mockListener).toHaveBeenNthCalledWith(2, state.array, "1", { amount: 1 });
+    expect(mockListener).toHaveBeenNthCalledWith(3, state.array, "0", newObj);
   });
 
   test("it triggers set event listeners for setting array SHIFT", () => {
@@ -434,8 +433,9 @@ describe("EventEmitter set listeners", () => {
 
     Emitter.removeSetListener(mockListener);
 
-    expect(mockListener).toHaveBeenCalledTimes(1);
-    expect(mockListener).toHaveBeenCalledWith(state.array, "0", deletedValue);
+    expect(mockListener).toHaveBeenCalledTimes(2);
+    expect(mockListener).toHaveBeenNthCalledWith(1, state.array, "0", { amount: 2 });
+    expect(mockListener).toHaveBeenNthCalledWith(2, state.array, "1", deletedValue);
   });
 
   test("it triggers set event listeners for setting array POP", () => {
@@ -448,7 +448,7 @@ describe("EventEmitter set listeners", () => {
     Emitter.removeSetListener(mockListener);
 
     expect(mockListener).toHaveBeenCalledTimes(1);
-    expect(mockListener).toHaveBeenCalledWith(state.array, "0", deletedValue);
+    expect(mockListener).toHaveBeenCalledWith(state.array, "1", deletedValue);
   });
 
   test("it triggers set event listeners for setting array FILL", () => {
