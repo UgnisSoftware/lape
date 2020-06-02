@@ -1,41 +1,49 @@
-import Emitter from "./eventEmitter";
+import Emitter from "./Emitter";
 
 export const trackAll = Symbol("all");
+export const deletedValue = Symbol("deleted");
 const allProxies = new WeakSet();
+
+const valueIsObject = (value: any) => typeof value === "object" && value !== null && !(value instanceof Date);
 
 const handler = {
   get: (target, prop) => {
-    const isArrayMethod =
-      Array.isArray(target) && (typeof prop === "symbol" || isNaN(prop));
-
-    if (isArrayMethod) {
-      Emitter.mapStateToComponents(target, trackAll);
+    const type = typeof target;
+    if (type === "string" || type === "number" || type === "boolean") {
       return Reflect.get(target, prop);
     }
-    Emitter.mapStateToComponents(target, prop);
+
+    const isArrayMethod = Array.isArray(target) && (typeof prop === "symbol" || isNaN(prop));
+
+    if (isArrayMethod) {
+      Emitter.triggerGetListeners(target, trackAll);
+      return Reflect.get(target, prop);
+    }
+    if (valueIsObject(target)) {
+      Emitter.triggerGetListeners(target, prop);
+      return Reflect.get(target, prop);
+    }
     return Reflect.get(target, prop);
   },
+  ownKeys: (target) => {
+    Emitter.triggerGetListeners(target, trackAll);
+    return Reflect.ownKeys(target);
+  },
+
   set: (target, prop, value) => {
-    const valueIsObject = typeof value === "object" && value !== null;
-    if (valueIsObject) {
+    if (valueIsObject(value)) {
       value = proxify(value);
     }
-    if(!(prop === 'length' && value === target[prop])){
-      Emitter.renderComponents(target, prop);
+    if (!((Array.isArray(target) && prop === "length") || value === target[prop])) {
+      Emitter.triggerSetListeners(target, prop, value);
     }
     return Reflect.set(target, prop, value);
   },
-  ownKeys: target => {
-    if (Emitter.recordingQueue.length) {
-      Emitter.mapStateToComponents(target, trackAll);
-    }
-    return Reflect.ownKeys(target);
-  },
   deleteProperty: (target, prop) => {
-    Emitter.deleteProperty(target, prop);
+    Emitter.triggerSetListeners(target, prop, deletedValue);
     Reflect.deleteProperty(target, prop);
     return true;
-  }
+  },
 };
 
 export const proxify = <T extends object>(state: T): T => {
@@ -43,7 +51,7 @@ export const proxify = <T extends object>(state: T): T => {
     return state;
   }
   for (let [key, value] of Object.entries(state)) {
-    if (typeof value === "object" && value !== null) {
+    if (valueIsObject(value)) {
       state[key] = proxify(value);
     }
   }

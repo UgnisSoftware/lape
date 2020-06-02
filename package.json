@@ -41,5 +41,8 @@
   },
   "jest": {
     "preset": "ts-jest"
+  },
+  "prettier": {
+    "printWidth": 120
   }
 }

@@ -1,4 +1,5 @@
-export { default as Emitter } from "./eventEmitter";
-export { connect } from "./connect";
+export { default as Emitter } from "./Emitter";
+export { connect } from "./connect/connect";
 export { proxify as lape } from "./proxify";
-export { useLape } from "./hook";
+export { useLape } from "./hook/hook";
+export * from "./undo/undo";
