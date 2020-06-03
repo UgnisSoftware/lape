@@ -1,4 +1,4 @@
-import { lape } from "lape";
+import { lape } from "../../../src";
 
 interface arr {
   amount: number;
