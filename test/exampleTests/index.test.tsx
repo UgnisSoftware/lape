@@ -3,8 +3,14 @@ import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
 import SimpleCounter from "./testApp/SimpleCounter";
 import { lapeResetAllChanges, lapeTrackAllChanges } from "lape/testing";
+import state from "./testApp/state";
 
 describe("WARNING: State is shared if not using Lape testing utils", () => {
+  afterAll(() => {
+    // reset the changes made in this test
+    state.count = 0;
+  });
+
   test("Increments count by one", () => {
     render(<SimpleCounter />);
 
@@ -22,7 +28,7 @@ describe("WARNING: State is shared if not using Lape testing utils", () => {
   });
 });
 
-describe("tsetsts", () => {
+describe("Good test", () => {
   beforeEach(() => {
     lapeTrackAllChanges();
   });
