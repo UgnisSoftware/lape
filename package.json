@@ -2,14 +2,14 @@
   "name": "lape",
   "version": "5.0.0",
   "description": "State manager for React",
-  "main": "./dist/bundle.js",
+  "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist/"
   ],
   "scripts": {
-    "build": "tsc && tsc --outFile dist/bundle.js --target ES5 --module AMD --declaration false",
+    "build": "tsc",
     "test": "jest"
   },
   "repository": {
@@ -40,7 +40,11 @@
     "typescript": "3.9.2"
   },
   "jest": {
-    "preset": "ts-jest"
+    "preset": "ts-jest",
+    "moduleNameMapper": {
+      "^lape/(.*)$": "<rootDir>/src/$1",
+      "^lape": "<rootDir>/src/index.ts"
+    }
   },
   "prettier": {
     "printWidth": 120

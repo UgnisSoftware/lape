@@ -1,25 +1,3 @@
-import * as React from "react";
-import state from "./state";
-import { connect } from "../../../src";
-
-const actionSimple = () => {
-  state.count += 1;
-};
-export const SimpleCount = connect(() => (
-  <div style={{ margin: 20 }} onClick={actionSimple}>
-    Simple counter: {state.count}
-  </div>
-));
-
-// const actionDeep = () => {
-//   state.deep.nest = !state.deep.nest;
-// };
-// const DeepChange = connect(() => (
-//   <div style={{ margin: 20 }} onClick={actionDeep}>
-//     {state.deep.nest.toString()}
-//   </div>
-// ));
-//
 // const actionIncrement = (i) => () => {
 //   recordUndo(() => {
 //     state.array[i].amount += 123;

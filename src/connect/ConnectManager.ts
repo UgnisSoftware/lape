@@ -24,6 +24,10 @@ class ConnectManager {
     this.forceRenders.pop();
   };
 
+  removeTracking = (forceRender: ForceRender) => {
+    this.stateDependencies.delete(forceRender);
+  };
+
   onGet: GetCallback = (target, prop) => {
     if (!this.forceRenders.length) {
       return;
@@ -54,6 +58,17 @@ class ConnectManager {
         forceRender();
       }
     });
+  };
+
+  reset = () => {
+    this.stateDependencies = new Map();
+    this.forceRenders = [];
+    // in case Emitter was not reset
+    Emitter.removeGetListener(this.onGet);
+    Emitter.removeSetListener(this.onSet);
+
+    Emitter.listenGetEvents(this.onGet);
+    Emitter.listenSetEvents(this.onSet);
   };
 }
 

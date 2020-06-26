@@ -15,7 +15,11 @@
     "suppressImplicitAnyIndexErrors": true,
     "lib": ["es7", "dom", "es2019"],
     "outDir": "./dist",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "lape": ["src/index.ts"],
+      "lape/*": ["src/*"]
+    }
   },
   "include": ["src"],
   "exclude": ["node_modules"]

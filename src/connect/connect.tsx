@@ -14,6 +14,10 @@ export const connect = (Component: React.ComponentType): React.ComponentType => 
   class Connect extends React.Component {
     componentRender = () => this.setState({});
 
+    componentWillUnmount() {
+      ConnectManager.removeTracking(this.componentRender);
+    }
+
     render() {
       ConnectManager.startTracking(this.componentRender);
       return (

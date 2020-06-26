@@ -2,8 +2,8 @@ export type GetCallback = (target: object, prop: string | Symbol) => void;
 export type SetCallback = (target: object, prop: string | Symbol, value: any) => void;
 
 class Emitter {
-  public listenersGet: GetCallback[] = [];
-  public listenersSet: SetCallback[] = [];
+  listenersGet: GetCallback[] = [];
+  listenersSet: SetCallback[] = [];
 
   listenGetEvents = (callback: GetCallback) => {
     this.listenersGet.push(callback);
@@ -23,6 +23,11 @@ class Emitter {
   };
   triggerSetListeners: SetCallback = (target, prop, value) => {
     this.listenersSet.forEach((callback) => callback(target, prop, value));
+  };
+
+  reset = () => {
+    this.listenersGet = [];
+    this.listenersSet = [];
   };
 }
 
