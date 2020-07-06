@@ -1,0 +1,72 @@
+import "@testing-library/jest-dom";
+import React from "react";
+import { render, fireEvent, screen } from "@testing-library/react";
+import UndoGlobal from "./testApp/UndoGlobal";
+import UndoGlobalLocal from "./testApp/UndoGlobalLocal";
+import UndoLocal from "./testApp/UndoLocal";
+import { lapeResetAllChanges, lapeTrackAllChanges } from "lape/testing";
+
+describe("Undo tests", () => {
+  // you should add this to Jests setupFilesAfterEnv step, so you wouldn't have to copy paste it to every test
+  beforeEach(() => {
+    lapeTrackAllChanges();
+  });
+
+  afterEach(() => {
+    lapeResetAllChanges();
+  });
+
+  test("Undo global", () => {
+    render(<UndoGlobal />);
+
+    expect(screen.getByText("Undo Global: 1233")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText("Undo Global: 1233"));
+
+    expect(screen.getByText("Undo Global: 1333")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText("undo"));
+
+    expect(screen.getByText("Undo Global: 1233")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText("redo"));
+
+    expect(screen.getByText("Undo Global: 1333")).toBeInTheDocument();
+  });
+
+  test("Undo local", () => {
+    render(<UndoLocal />);
+
+    expect(screen.getByText("Undo Local: 0")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText(/Undo Local/i));
+
+    expect(screen.getByText("Undo Local: 3")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText("undo"));
+
+    expect(screen.getByText("Undo Local: 0")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText("redo"));
+
+    expect(screen.getByText("Undo Local: 3")).toBeInTheDocument();
+  });
+
+  test("Undo mixed", () => {
+    render(<UndoGlobalLocal />);
+
+    expect(screen.getByText("G:0, L:0")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText(/G:/i));
+
+    expect(screen.getByText("G:1, L:1")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText("undo"));
+
+    expect(screen.getByText("G:0, L:0")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText("redo"));
+
+    expect(screen.getByText("G:1, L:1")).toBeInTheDocument();
+  });
+});

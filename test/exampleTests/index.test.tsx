@@ -28,7 +28,8 @@ describe("WARNING: State is shared if not using Lape testing utils", () => {
   });
 });
 
-describe("Good test", () => {
+describe("Simple number change test", () => {
+  // you should add this to Jests setupFilesAfterEnv step, so you wouldn't have to copy paste it to every test
   beforeEach(() => {
     lapeTrackAllChanges();
   });

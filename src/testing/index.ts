@@ -1,4 +1,4 @@
-import { Emitter } from "lape";
+import { Emitter, resetUndoStack } from "lape";
 import ConnectManager from "lape/connect/ConnectManager";
 
 let tracked = new Map();
@@ -20,6 +20,7 @@ export const lapeTrackAllChanges = () => {
 export const lapeResetAllChanges = () => {
   Emitter.reset();
   ConnectManager.reset();
+  resetUndoStack();
   tracked.forEach((target, modified) => {
     if (Array.isArray(key)) {
       modified.length = target.length;

@@ -7,7 +7,7 @@ const actionDeep = () => {
 };
 const NestedObject = () => (
   <div style={{ margin: 20 }} onClick={actionDeep}>
-    {state.deep.nest.toString()}
+    Nested object: {state.deep.nest.toString()}
   </div>
 );
 

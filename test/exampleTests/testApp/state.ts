@@ -29,7 +29,7 @@ const defaultState: State = {
       amount: 1233,
     },
   ],
-  date: new Date(),
+  date: new Date("2020-07-01"),
   users: {
     "1-id": {
       name: "asdasd",
