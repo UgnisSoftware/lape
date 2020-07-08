@@ -10,8 +10,8 @@ const StopTracking = ({ stopTracking }: StopTrackingProps) => {
   return null;
 };
 
-export const connect = (Component: React.ComponentType): React.ComponentType => {
-  class Connect extends React.Component {
+export const connect = <T extends {}>(Component: React.ComponentType<T>): React.ComponentType<T> => {
+  class Connect extends React.Component<T> {
     timeout = null;
     componentRender = () => {
       if (!this.timeout) {
