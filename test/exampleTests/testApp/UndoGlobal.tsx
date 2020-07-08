@@ -8,7 +8,7 @@ const actionIncrement = (i) => () => {
   });
 };
 
-const UndoArray = connect(() => (
+const UndoArray = () => (
   <div>
     <button onClick={() => undo()} type="button">
       undo
@@ -20,6 +20,6 @@ const UndoArray = connect(() => (
       Undo Global: {state.array[0]?.amount}
     </button>
   </div>
-));
+);
 
 export default connect(UndoArray);

@@ -2,7 +2,7 @@ import * as React from "react";
 import state from "./state";
 import { connect } from "lape";
 
-const DateComponent = connect(() => {
+const DateComponent = () => {
   const onClick = () => {
     state.date = new Date("2020-07-02");
   };
@@ -14,6 +14,6 @@ const DateComponent = connect(() => {
       </button>
     </div>
   );
-});
+};
 
 export default connect(DateComponent);

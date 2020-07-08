@@ -3,7 +3,7 @@ import { connect, recordUndo, redo, undo, useLape } from "lape";
 
 const STACK_ID = "counts";
 
-const UndoLocal = connect(() => {
+const UndoLocal = () => {
   const localState = useLape({
     count: 0,
   });
@@ -27,6 +27,6 @@ const UndoLocal = connect(() => {
       <div onClick={onClick}>Undo Local: {localState.count}</div>
     </div>
   );
-});
+};
 
 export default connect(UndoLocal);

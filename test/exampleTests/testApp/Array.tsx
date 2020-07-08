@@ -12,7 +12,7 @@ const actionRemove = (i) => () => {
   state.array.splice(i, 1);
 };
 
-const Array = connect(() => (
+const Array = () => (
   <div style={{ margin: 20 }}>
     {state.array.map((data, i) => (
       <div key={i}>
@@ -29,6 +29,6 @@ const Array = connect(() => (
       add
     </button>
   </div>
-));
+);
 
 export default connect(Array);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useReducer } from "react";
 import ConnectManager from "./ConnectManager";
 
 interface StopTrackingProps {
@@ -11,23 +11,21 @@ const StopTracking = ({ stopTracking }: StopTrackingProps) => {
 };
 
 export const connect = (Component: React.ComponentType): React.ComponentType => {
-  class Connect extends React.Component {
-    componentRender = () => this.setState({});
+  return (props) => {
+    const [, forceRender] = useReducer((s) => s + 1, 0);
 
-    componentWillUnmount() {
-      ConnectManager.removeTracking(this.componentRender);
-    }
+    useEffect(() => {
+      return () => {
+        ConnectManager.removeTracking(forceRender);
+      };
+    }, []);
 
-    render() {
-      ConnectManager.startTracking(this.componentRender);
-      return (
-        <>
-          <Component {...this.props} />
-          <StopTracking stopTracking={() => ConnectManager.stopTracking()} />
-        </>
-      );
-    }
-  }
-
-  return Connect;
+    ConnectManager.startTracking(forceRender);
+    return (
+      <>
+        <Component {...props} />
+        <StopTracking stopTracking={() => ConnectManager.stopTracking()} />
+      </>
+    );
+  };
 };

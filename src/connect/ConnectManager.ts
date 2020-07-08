@@ -55,9 +55,7 @@ class ConnectManager {
     this.stateDependencies.forEach((targets, forceRender) => {
       const trg = targets.get(target);
       if (trg && (trg === trackAllSet || trg.has(prop))) {
-        setTimeout(() => {
-          forceRender();
-        }, 0);
+        forceRender();
       }
     });
   };

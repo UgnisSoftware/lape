@@ -2,7 +2,7 @@ import * as React from "react";
 import state from "./state";
 import { connect, recordUndo, redo, undo, useLape } from "lape";
 
-const GlobalLocalUndo = connect(() => {
+const GlobalLocalUndo = () => {
   const localState = useLape({
     count: 0,
   });
@@ -26,6 +26,6 @@ const GlobalLocalUndo = connect(() => {
       </div>
     </div>
   );
-});
+};
 
 export default connect(GlobalLocalUndo);

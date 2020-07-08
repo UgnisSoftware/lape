@@ -1,4 +1,5 @@
 import Emitter from "./Emitter";
+import { unstable_batchedUpdates } from "react-dom";
 
 export const trackAll = Symbol("all");
 export const deletedValue = Symbol("deleted");
@@ -34,14 +35,19 @@ const handler = {
     if (valueIsObject(value)) {
       value = proxify(value);
     }
-    if (!((Array.isArray(target) && prop === "length") || value === target[prop])) {
-      Emitter.triggerSetListeners(target, prop, value);
-    }
-    return Reflect.set(target, prop, value);
+    unstable_batchedUpdates(() => {
+      if (!((Array.isArray(target) && prop === "length") || value === target[prop])) {
+        Emitter.triggerSetListeners(target, prop, value);
+      }
+      return Reflect.set(target, prop, value);
+    });
+    return true;
   },
   deleteProperty: (target, prop) => {
-    Emitter.triggerSetListeners(target, prop, deletedValue);
-    Reflect.deleteProperty(target, prop);
+    unstable_batchedUpdates(() => {
+      Emitter.triggerSetListeners(target, prop, deletedValue);
+      Reflect.deleteProperty(target, prop);
+    });
     return true;
   },
 };
