@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import React from "react";
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import NestedObject from "./testApp/NestedObject";
 import { lapeResetAllChanges, lapeTrackAllChanges } from "lape/testing";
 
@@ -14,13 +14,13 @@ describe("Nested object", () => {
     lapeResetAllChanges();
   });
 
-  test("Nested object changes", () => {
+  test("Nested object changes", async () => {
     render(<NestedObject />);
 
     expect(screen.getByText("Nested object: true")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText(/Nested object/i));
 
-    expect(screen.getByText("Nested object: false")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("Nested object: false")).toBeInTheDocument());
   });
 });

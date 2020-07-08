@@ -1,6 +1,6 @@
 {
   "name": "lape",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "description": "State manager for React",
   "main": "./dist/index.js",
   "module": "./dist/index.js",

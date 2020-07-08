@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import React from "react";
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import UndoGlobal from "./testApp/UndoGlobal";
 import UndoGlobalLocal from "./testApp/UndoGlobalLocal";
 import UndoLocal from "./testApp/UndoLocal";
@@ -16,57 +16,48 @@ describe("Undo tests", () => {
     lapeResetAllChanges();
   });
 
-  test("Undo global", () => {
+  test("Undo global", async () => {
     render(<UndoGlobal />);
 
     expect(screen.getByText("Undo Global: 1233")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("Undo Global: 1233"));
-
-    expect(screen.getByText("Undo Global: 1333")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("Undo Global: 1333")).toBeInTheDocument());
 
     fireEvent.click(screen.getByText("undo"));
-
-    expect(screen.getByText("Undo Global: 1233")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("Undo Global: 1233")).toBeInTheDocument());
 
     fireEvent.click(screen.getByText("redo"));
-
-    expect(screen.getByText("Undo Global: 1333")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("Undo Global: 1333")).toBeInTheDocument());
   });
 
-  test("Undo local", () => {
+  test("Undo local", async () => {
     render(<UndoLocal />);
 
     expect(screen.getByText("Undo Local: 0")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText(/Undo Local/i));
-
-    expect(screen.getByText("Undo Local: 3")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("Undo Local: 3")).toBeInTheDocument());
 
     fireEvent.click(screen.getByText("undo"));
-
-    expect(screen.getByText("Undo Local: 0")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("Undo Local: 0")).toBeInTheDocument());
 
     fireEvent.click(screen.getByText("redo"));
-
-    expect(screen.getByText("Undo Local: 3")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("Undo Local: 3")).toBeInTheDocument());
   });
 
-  test("Undo mixed", () => {
+  test("Undo mixed", async () => {
     render(<UndoGlobalLocal />);
 
     expect(screen.getByText("G:0, L:0")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText(/G:/i));
-
-    expect(screen.getByText("G:1, L:1")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("G:1, L:1")).toBeInTheDocument());
 
     fireEvent.click(screen.getByText("undo"));
-
-    expect(screen.getByText("G:0, L:0")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("G:0, L:0")).toBeInTheDocument());
 
     fireEvent.click(screen.getByText("redo"));
-
-    expect(screen.getByText("G:1, L:1")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("G:1, L:1")).toBeInTheDocument());
   });
 });
