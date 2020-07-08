@@ -10,7 +10,7 @@ const StopTracking = ({ stopTracking }: StopTrackingProps) => {
   return null;
 };
 
-export const connect = (Component: React.ComponentType): React.ComponentType => {
+export const connect = <T extends {}>(Component: React.ComponentType<T>): React.ComponentType<T> => {
   return (props) => {
     const [, forceRender] = useReducer((s) => s + 1, 0);
 
