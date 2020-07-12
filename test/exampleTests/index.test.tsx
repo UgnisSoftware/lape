@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import React from "react";
-import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import { render, fireEvent, screen } from "@testing-library/react";
 import SimpleCounter from "./testApp/SimpleCounter";
 import { lapeResetAllChanges, lapeTrackAllChanges } from "lape/testing";
 import state from "./testApp/state";
@@ -16,7 +16,7 @@ describe("WARNING: State is shared if not using Lape testing utils", () => {
 
     fireEvent.click(screen.getByText(/Simple counter/i));
 
-    await waitFor(() => expect(screen.getByText("Simple counter: 1")).toBeInTheDocument());
+    expect(await screen.findByText("Simple counter: 1")).toBeInTheDocument();
   });
 
   test("Increments count by one again", async () => {
@@ -24,7 +24,7 @@ describe("WARNING: State is shared if not using Lape testing utils", () => {
 
     fireEvent.click(screen.getByText(/Simple counter/i));
 
-    await waitFor(() => expect(screen.getByText("Simple counter: 2")).toBeInTheDocument());
+    expect(await screen.findByText("Simple counter: 2")).toBeInTheDocument();
   });
 });
 
@@ -43,7 +43,7 @@ describe("Simple number change test", () => {
 
     fireEvent.click(screen.getByText(/Simple counter/i));
 
-    await waitFor(() => expect(screen.getByText("Simple counter: 1")).toBeInTheDocument());
+    expect(await screen.findByText("Simple counter: 1")).toBeInTheDocument();
   });
 
   test("Increments count by one again", async () => {
@@ -51,6 +51,6 @@ describe("Simple number change test", () => {
 
     fireEvent.click(screen.getByText(/Simple counter/i));
 
-    await waitFor(() => expect(screen.getByText("Simple counter: 1")).toBeInTheDocument());
+    expect(await screen.findByText("Simple counter: 1")).toBeInTheDocument();
   });
 });
