@@ -1,0 +1,145 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Routing · Lape</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Most routing libraries, like `react-router` and `@reach/router` handle state internally, there is no integration needed with Lape."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Routing · Lape"/><meta property="og:type" content="website"/><meta property="og:url" content="https://UgnisSoftware.github.io/lape/"/><meta property="og:description" content="Most routing libraries, like `react-router` and `@reach/router` handle state internally, there is no integration needed with Lape."/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/lape/img/logo.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/darcula.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300,400,500,700"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/lape/js/scrollSpy.js"></script><link rel="stylesheet" href="/lape/css/main.css"/><script src="/lape/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/lape/"><img class="logo" src="/lape/img/logo.ico" alt="Lape"/><h2 class="headerTitleWithLogo">Lape</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/lape/docs/getting-started" target="_self">Docs</a></li><li class=""><a href="https://github.com/UgnisSoftware/lape" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Guides</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Getting Started</h3><ul class=""><li class="navListItem"><a class="navItem" href="/lape/docs/getting-started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/lape/docs/thinking-in-lape">Thinking in Lape</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">API</h3><ul class=""><li class="navListItem"><a class="navItem" href="/lape/docs/lape">lape</a></li><li class="navListItem"><a class="navItem" href="/lape/docs/connect">connect</a></li><li class="navListItem"><a class="navItem" href="/lape/docs/useLape">useLape</a></li><li class="navListItem"><a class="navItem" href="/lape/docs/undo-redo">undo / redo</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/lape/docs/testing">Testing</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/lape/docs/routing">Routing</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Routing</h1></header><article><div><span><p>Most routing libraries, like <code>react-router</code> and <code>@reach/router</code> handle state internally, there is no integration needed with Lape.</p>
+<p>But with Lape it's not that difficult to write your own routing library. Here is a simplistic implementation that you can easily adapt to your projects needs.</p>
+<pre><code class="hljs css language-typescript jsx"><span class="hljs-keyword">import</span> { lape } <span class="hljs-keyword">from</span> <span class="hljs-string">"lape"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> Router {
+  url: <span class="hljs-built_in">string</span>;
+  query: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">const</span> router: Router = lape({
+  url: <span class="hljs-built_in">window</span>.location.pathname,
+  query: <span class="hljs-built_in">window</span>.location.search,
+});
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> paths = {
+  homepage: <span class="hljs-string">"/"</span>,
+  docs: <span class="hljs-string">"/docs"</span>,
+  component: <span class="hljs-string">"/component/:componentId"</span>,
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> router;
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="all-you-need-are-just-4-helper-functions"></a><a href="#all-you-need-are-just-4-helper-functions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>All you need are just 4 helper functions:</h2>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="navigate"></a><a href="#navigate" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>navigate</h2>
+<p>When you need to navigate not after clicking a link but after a callback from the server or some other JS event</p>
+<pre><code class="hljs css language-typescript jsx"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> navigate = <span class="hljs-function">(<span class="hljs-params">url</span>) =&gt;</span> {
+  router.url = url;
+  history.pushState(<span class="hljs-literal">null</span>, <span class="hljs-string">""</span>, url);
+};
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="example"></a><a href="#example" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h3>
+<pre><code class="hljs css language-jsx">fetch(url).then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  navigate(backUrl);
+});
+</code></pre>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="matches"></a><a href="#matches" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>matches</h2>
+<p>To check if your current url matches that path</p>
+<pre><code class="hljs css language-typescript jsx"><span class="hljs-keyword">import</span> { pathToRegexp } <span class="hljs-keyword">from</span> <span class="hljs-string">"path-to-regexp"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> matches = <span class="hljs-function">(<span class="hljs-params">path</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> pathToRegexp(path).test(router.url);
+};
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="example-1"></a><a href="#example-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h3>
+<pre><code class="hljs css language-jsx"><span class="hljs-keyword">return</span> (
+  <span class="xml"><span class="hljs-tag">&lt;&gt;</span>
+    {matches(paths.docs) &amp;&amp; <span class="hljs-tag">&lt;<span class="hljs-name">Docs</span> /&gt;</span>}
+    {matches(paths.component) &amp;&amp; <span class="hljs-tag">&lt;<span class="hljs-name">Component</span> /&gt;</span>}
+  <span class="hljs-tag">&lt;/&gt;</span></span>
+);
+</code></pre>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="pathtourl"></a><a href="#pathtourl" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>pathToUrl</h2>
+<p>When you keep your urls in a single place, they will look like this <code>'/component/:componentId'</code>. This function turns the path string into a valid url.</p>
+<pre><code class="hljs css language-typescript jsx"><span class="hljs-keyword">import</span> { pathToRegexp } <span class="hljs-keyword">from</span> <span class="hljs-string">"path-to-regexp"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> pathToUrl = <span class="hljs-function">(<span class="hljs-params">path, params?</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> compile(path)(params);
+};
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="example-2"></a><a href="#example-2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h3>
+<pre><code class="hljs css language-jsx">pathToUrl(paths.component, { <span class="hljs-attr">componentId</span>: <span class="hljs-number">123</span> }); <span class="hljs-comment">// /component/123</span>
+</code></pre>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="pathtoparams"></a><a href="#pathtoparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>pathToParams</h2>
+<p>Given the path, returns the params from the current url.</p>
+<pre><code class="hljs css language-typescript jsx"><span class="hljs-keyword">import</span> { pathToRegexp } <span class="hljs-keyword">from</span> <span class="hljs-string">"path-to-regexp"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> pathToParams = <span class="hljs-function">(<span class="hljs-params">path</span>) =&gt;</span> {
+  <span class="hljs-keyword">let</span> keys = [];
+  <span class="hljs-keyword">const</span> regexp = pathToRegexp(path, keys);
+  <span class="hljs-keyword">const</span> match = regexp.exec(router.url);
+  <span class="hljs-keyword">if</span> (!match) {
+    <span class="hljs-keyword">return</span> {};
+  }
+  <span class="hljs-keyword">const</span> [_, ...values] = match;
+  <span class="hljs-keyword">return</span> keys.reduce(<span class="hljs-function">(<span class="hljs-params">acc, key, index</span>) =&gt;</span> {
+    acc[key.name] = values[index];
+    <span class="hljs-keyword">return</span> acc;
+  }, {});
+};
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="example-3"></a><a href="#example-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h3>
+<pre><code class="hljs css language-jsx"><span class="hljs-comment">// url is /component/123</span>
+pathToParams(paths.component); <span class="hljs-comment">// { componentId: 123 }</span>
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/lape/docs/testing"><span class="arrow-prev">← </span><span>Testing</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#all-you-need-are-just-4-helper-functions">All you need are just 4 helper functions:</a></li><li><a href="#navigate">navigate</a><ul class="toc-headings"><li><a href="#example">Example</a></li></ul></li><li><a href="#matches">matches</a><ul class="toc-headings"><li><a href="#example-1">Example</a></li></ul></li><li><a href="#pathtourl">pathToUrl</a><ul class="toc-headings"><li><a href="#example-2">Example</a></li></ul></li><li><a href="#pathtoparams">pathToParams</a><ul class="toc-headings"><li><a href="#example-3">Example</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/lape/" class="nav-home"><img src="/lape/img/logo.ico" alt="Lape" width="66" height="58"/></a><div><h5>Docs</h5><a href="/lape/docs/en/getting_started.html">Getting Started</a><a href="/lape/docs/en/lape.html">API Reference</a><a href="/lape/docs/en/testing.html">Guides</a></div><div><h5>Other Projects</h5><a href="https://ugnis.com">Ugnis</a></div><div><h5>More</h5><a href="https://github.com/UgnisSoftware/lape">GitHub</a><a class="github-button" href="https://github.com/UgnisSoftware/lape" data-icon="octicon-star" data-count-href="/UgnisSoftware/lape/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2020 Ugnis. All Rights Reserved.</section></footer></div></body></html>
