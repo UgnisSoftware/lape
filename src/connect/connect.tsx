@@ -41,8 +41,8 @@ export const connect = <T extends React.ComponentType<GetProps<T>>>(Component: T
 
       return [
         // @ts-ignore
-        <Component {...this.props} />,
-        <StopTracking stopTracking={() => ConnectManager.stopTracking()} />,
+        <Component {...this.props} key="connect" />,
+        <StopTracking stopTracking={() => ConnectManager.stopTracking()} key="track" />,
       ];
     }
   }
