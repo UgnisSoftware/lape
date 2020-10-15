@@ -1,15 +1,15 @@
 {
   "name": "lape",
-  "version": "5.0.8",
+  "version": "5.0.9",
   "description": "State manager for React",
-  "main": "./dist/index.js",
+  "main": "./dist/bundle.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist/"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc --outFile dist/bundle.js --target ES5 --module AMD --declaration false",
     "test": "jest"
   },
   "repository": {
