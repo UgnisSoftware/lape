@@ -1,5 +1,5 @@
-import { Emitter, resetUndoStack } from "lape";
-import ConnectManager from "lape/connect/ConnectManager";
+import { Emitter, resetUndoStack } from "../index";
+import ConnectManager from "../connect/ConnectManager";
 
 let tracked = new Map();
 
