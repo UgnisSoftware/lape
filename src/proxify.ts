@@ -34,15 +34,20 @@ const handler = {
     if (valueIsObject(value)) {
       value = proxify(value);
     }
-    if (!((Array.isArray(target) && prop === "length") || value === target[prop])) {
-      Emitter.triggerSetListeners(target, prop, value);
+    const trigereableProp = !((Array.isArray(target) && prop === "length") || value === target[prop]);
+    if (trigereableProp) {
+      Emitter.triggerPreSetListeners(target, prop, value);
     }
     Reflect.set(target, prop, value);
+    if (trigereableProp) {
+      Emitter.triggerSetListeners(target, prop, value);
+    }
     return true;
   },
   deleteProperty: (target, prop) => {
-    Emitter.triggerSetListeners(target, prop, deletedValue);
+    Emitter.triggerPreSetListeners(target, prop, deletedValue);
     Reflect.deleteProperty(target, prop);
+    Emitter.triggerSetListeners(target, prop, deletedValue);
     return true;
   },
 };

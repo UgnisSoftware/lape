@@ -3,6 +3,7 @@ export type SetCallback = (target: object, prop: string | Symbol, value: any) =>
 
 class Emitter {
   listenersGet: GetCallback[] = [];
+  listenersPreSet: SetCallback[] = [];
   listenersSet: SetCallback[] = [];
 
   listenGetEvents = (callback: GetCallback) => {
@@ -13,6 +14,16 @@ class Emitter {
   };
   triggerGetListeners: GetCallback = (target, prop) => {
     this.listenersGet.forEach((callback) => callback(target, prop));
+  };
+
+  listenPreSetEvents = (callback: SetCallback) => {
+    this.listenersPreSet.push(callback);
+  };
+  removePreSetListener = (callback: SetCallback) => {
+    this.listenersPreSet = this.listenersPreSet.filter((fn) => fn !== callback);
+  };
+  triggerPreSetListeners: SetCallback = (target, prop, value) => {
+    this.listenersPreSet.forEach((callback) => callback(target, prop, value));
   };
 
   listenSetEvents = (callback: SetCallback) => {
@@ -27,6 +38,7 @@ class Emitter {
 
   reset = () => {
     this.listenersGet = [];
+    this.listenersPreSet = [];
     this.listenersSet = [];
   };
 }

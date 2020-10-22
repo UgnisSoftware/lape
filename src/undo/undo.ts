@@ -40,9 +40,9 @@ export const recordUndo = (callback: () => void, stackId: StackIds = "default") 
     });
   };
 
-  Emitter.listenSetEvents(cb);
+  Emitter.listenPreSetEvents(cb);
   callback();
-  Emitter.removeSetListener(cb);
+  Emitter.removePreSetListener(cb);
 
   if (recordingStack[stackId].length) {
     currentStack[stackId].stack = currentStack[stackId].stack

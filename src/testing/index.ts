@@ -14,7 +14,7 @@ const cb = (target: object) => {
 };
 
 export const lapeTrackAllChanges = () => {
-  Emitter.listenSetEvents(cb);
+  Emitter.listenPreSetEvents(cb);
 };
 
 export const lapeResetAllChanges = () => {
