@@ -1,10 +1,11 @@
 import "@testing-library/jest-dom";
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
-import NestedObject from "./testApp/NestedObject";
-import { lapeResetAllChanges, lapeTrackAllChanges } from "lape/testing";
 
-describe("Nested object", () => {
+import { lapeResetAllChanges, lapeTrackAllChanges } from "lape/testing";
+import MultipleChanges from "./testApp/MultipleChanges";
+
+describe("Multiple Changes", () => {
   // you should add this to Jests setupFilesAfterEnv step, so you wouldn't have to copy paste it to every test
   beforeEach(() => {
     lapeTrackAllChanges();
@@ -14,13 +15,12 @@ describe("Nested object", () => {
     lapeResetAllChanges();
   });
 
-  test("Nested object changes", async () => {
-    render(<NestedObject />);
+  test("Multiple Changes does not crash", async () => {
+    render(<MultipleChanges />);
 
-    expect(screen.getByText("Nested object: true")).toBeInTheDocument();
+    expect(screen.getByText("G:0, L:0")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByText(/Nested object/i));
-
-    expect(screen.getByText("Nested object: false")).toBeInTheDocument();
+    fireEvent.click(screen.getByText(/G:/i));
+    expect(screen.getByText("G:1, L:1")).toBeInTheDocument();
   });
 });

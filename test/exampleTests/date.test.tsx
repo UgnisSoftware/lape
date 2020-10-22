@@ -21,6 +21,6 @@ describe("Date tests", () => {
 
     fireEvent.click(screen.getByText(/Date/i));
 
-    expect(await screen.findByText("Date: 2020-07-02T00:00:00.000Z")).toBeInTheDocument();
+    expect(screen.getByText("Date: 2020-07-02T00:00:00.000Z")).toBeInTheDocument();
   });
 });

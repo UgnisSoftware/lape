@@ -19,45 +19,45 @@ describe("Undo tests", () => {
   test("Undo global", async () => {
     render(<UndoGlobal />);
 
-    expect(await screen.findByText("Undo Global: 1233")).toBeInTheDocument();
+    expect(screen.getByText("Undo Global: 1233")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("Undo Global: 1233"));
-    expect(await screen.findByText("Undo Global: 1333")).toBeInTheDocument();
+    expect(screen.getByText("Undo Global: 1333")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("undo"));
-    expect(await screen.findByText("Undo Global: 1233")).toBeInTheDocument();
+    expect(screen.getByText("Undo Global: 1233")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("redo"));
-    expect(await screen.findByText("Undo Global: 1333")).toBeInTheDocument();
+    expect(screen.getByText("Undo Global: 1333")).toBeInTheDocument();
   });
 
   test("Undo local", async () => {
     render(<UndoLocal />);
 
-    expect(await screen.findByText("Undo Local: 0")).toBeInTheDocument();
+    expect(screen.getByText("Undo Local: 0")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText(/Undo Local/i));
-    expect(await screen.findByText("Undo Local: 3")).toBeInTheDocument();
+    expect(screen.getByText("Undo Local: 3")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("undo"));
-    expect(await screen.findByText("Undo Local: 0")).toBeInTheDocument();
+    expect(screen.getByText("Undo Local: 0")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("redo"));
-    expect(await screen.findByText("Undo Local: 3")).toBeInTheDocument();
+    expect(screen.getByText("Undo Local: 3")).toBeInTheDocument();
   });
 
   test("Undo mixed", async () => {
     render(<UndoGlobalLocal />);
 
-    expect(await screen.findByText("G:0, L:0")).toBeInTheDocument();
+    expect(screen.getByText("G:0, L:0")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText(/G:/i));
-    expect(await screen.findByText("G:1, L:1")).toBeInTheDocument();
+    expect(screen.getByText("G:1, L:1")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("undo"));
-    expect(await screen.findByText("G:0, L:0")).toBeInTheDocument();
+    expect(screen.getByText("G:0, L:0")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("redo"));
-    expect(await screen.findByText("G:1, L:1")).toBeInTheDocument();
+    expect(screen.getByText("G:1, L:1")).toBeInTheDocument();
   });
 });

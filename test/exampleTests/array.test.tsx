@@ -20,15 +20,15 @@ describe("Array tests", () => {
     expect(screen.getByText("Array 0: 1233")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("increment 0"));
-    expect(await screen.findByText("Array 0: 1333")).toBeInTheDocument();
+    expect(screen.getByText("Array 0: 1333")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("add"));
-    expect(await screen.findByText("Array 1: 123")).toBeInTheDocument();
+    expect(screen.getByText("Array 1: 123")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("increment 1"));
-    expect(await screen.findByText("Array 1: 223")).toBeInTheDocument();
+    expect(screen.getByText("Array 1: 223")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("remove 1"));
-    expect(await screen.findByText("Array 1: 223")).not.toBeInTheDocument();
+    expect(screen.queryByText("Array 1: 223")).not.toBeInTheDocument();
   });
 });

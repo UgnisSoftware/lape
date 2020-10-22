@@ -16,7 +16,7 @@ describe("WARNING: State is shared if not using Lape testing utils", () => {
 
     fireEvent.click(screen.getByText(/Simple counter/i));
 
-    expect(await screen.findByText("Simple counter: 1")).toBeInTheDocument();
+    expect(screen.getByText("Simple counter: 1")).toBeInTheDocument();
   });
 
   test("Increments count by one again", async () => {
@@ -24,7 +24,7 @@ describe("WARNING: State is shared if not using Lape testing utils", () => {
 
     fireEvent.click(screen.getByText(/Simple counter/i));
 
-    expect(await screen.findByText("Simple counter: 2")).toBeInTheDocument();
+    expect(screen.getByText("Simple counter: 2")).toBeInTheDocument();
   });
 });
 
@@ -43,7 +43,7 @@ describe("Simple number change test", () => {
 
     fireEvent.click(screen.getByText(/Simple counter/i));
 
-    expect(await screen.findByText("Simple counter: 1")).toBeInTheDocument();
+    expect(screen.getByText("Simple counter: 1")).toBeInTheDocument();
   });
 
   test("Increments count by one again", async () => {
@@ -51,6 +51,6 @@ describe("Simple number change test", () => {
 
     fireEvent.click(screen.getByText(/Simple counter/i));
 
-    expect(await screen.findByText("Simple counter: 1")).toBeInTheDocument();
+    expect(screen.getByText("Simple counter: 1")).toBeInTheDocument();
   });
 });

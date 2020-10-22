@@ -18,21 +18,11 @@ type GetProps<C> = C extends React.ComponentType<infer P>
 
 export const connect = <T extends React.ComponentType<GetProps<T>>>(Component: T): T => {
   class Connect extends React.Component<GetProps<T>> {
-    timeout = null;
     componentRender = () => {
-      if (!this.timeout) {
-        this.timeout = setTimeout(() => {
-          this.forceUpdate();
-          this.timeout = null;
-        }, 0);
-      }
+      this.setState({});
     };
 
     componentWillUnmount = () => {
-      if (this.timeout) {
-        clearTimeout(this.timeout);
-        this.timeout = null;
-      }
       ConnectManager.removeTracking(this.componentRender);
     };
 
