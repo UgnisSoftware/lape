@@ -4,7 +4,7 @@ export const trackAll = Symbol("all");
 export const deletedValue = Symbol("deleted");
 const allProxies = new WeakSet();
 
-const valueIsObject = (value: any) => typeof value === "object" && value !== null && !(value instanceof Date);
+const valueIsObject = (value: any) => typeof value === "object" && value !== null && !(value instanceof Date) && !(value instanceof Blob);
 
 const handler = {
   get: (target, prop) => {
