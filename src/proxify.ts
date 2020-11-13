@@ -1,10 +1,11 @@
+import { isValidElement } from "react";
 import Emitter from "./Emitter";
 
 export const trackAll = Symbol("all");
 export const deletedValue = Symbol("deleted");
 const allProxies = new WeakSet();
 
-const valueIsObject = (value: any) => typeof value === "object" && value !== null && !(value instanceof Date) && !(value instanceof Blob);
+const valueIsObject = (value: any) => typeof value === "object" && value !== null && !(value instanceof Date) && !(value instanceof Blob) && !isValidElement(value);
 
 const handler = {
   get: (target, prop) => {
