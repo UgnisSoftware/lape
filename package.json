@@ -1,6 +1,6 @@
 {
   "name": "lape",
-  "version": "5.2.4",
+  "version": "5.3.1",
   "description": "State manager for React",
   "main": "./dist/commonjs/index.js",
   "module": "./dist/index.js",
@@ -9,6 +9,7 @@
     "dist/"
   ],
   "scripts": {
+    "prepare": "npm run build",
     "build": "tsc && tsc --outDir dist/commonjs --target ES5 --module commonjs --declaration false",
     "test": "jest"
   },

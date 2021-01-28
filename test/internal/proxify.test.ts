@@ -1,6 +1,6 @@
 import { Emitter } from "../../src";
 import { deletedValue, trackAll } from "../../src/proxify";
-import { createNewState } from "./helpers";
+import { createNewState, createNewStateWithIgnore } from "./helpers";
 
 describe("EventEmitter get listeners", () => {
   test("it allows removing event listeners", () => {
@@ -19,6 +19,19 @@ describe("EventEmitter get listeners", () => {
     Emitter.listenGetEvents(mockListener);
 
     state.count;
+
+    Emitter.removeGetListener(mockListener);
+
+    expect(mockListener).toHaveBeenCalledTimes(1);
+    expect(mockListener).toHaveBeenCalledWith(state, "count");
+  });
+
+  test("it triggers get event listener on equality check", () => {
+    const state = createNewState();
+    const mockListener = jest.fn();
+    Emitter.listenGetEvents(mockListener);
+
+    state.count === 0;
 
     Emitter.removeGetListener(mockListener);
 
@@ -509,5 +522,17 @@ describe("EventEmitter set listeners", () => {
     expect(mockListener).toHaveBeenCalledTimes(2);
     expect(mockListener).toHaveBeenNthCalledWith(1, state.array, "0", stateCopy.array[1]);
     expect(mockListener).toHaveBeenNthCalledWith(2, state.array, "1", stateCopy.array[0]);
+  });
+});
+
+describe("Ignored state", () => {
+  test("it allows ignoring state", () => {
+    const state = createNewStateWithIgnore();
+    const mockListener = jest.fn();
+    Emitter.listenSetEvents(mockListener);
+
+    state.deep.nest = false;
+
+    expect(mockListener).toHaveBeenCalledTimes(0);
   });
 });

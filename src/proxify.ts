@@ -4,8 +4,20 @@ import Emitter from "./Emitter";
 export const trackAll = Symbol("all");
 export const deletedValue = Symbol("deleted");
 const allProxies = new WeakSet();
+const ignoredValues = new WeakSet();
 
-const valueIsObject = (value: any) => typeof value === "object" && value !== null && !(value instanceof Date) && !(value instanceof Blob) && !isValidElement(value);
+export const ignoreState = (value: any) => {
+  ignoredValues.add(value);
+  return value;
+};
+
+const valueIsObject = (value: any) =>
+  typeof value === "object" &&
+  value !== null &&
+  !(value instanceof Date) &&
+  !(value instanceof Blob) &&
+  !isValidElement(value) &&
+  !ignoredValues.has(value);
 
 const handler = {
   get: (target, prop) => {

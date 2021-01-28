@@ -1,4 +1,4 @@
-import { lape, resetUndoStack } from "../../src";
+import { lape, resetUndoStack, ignoreState } from "../../src";
 
 interface arr {
   amount: number;
@@ -46,6 +46,38 @@ export const createNewState = () => {
         email: "asdasd@john.com",
       },
     },
+  };
+
+  return lape(defaultState);
+};
+
+export const createNewStateWithIgnore = () => {
+  resetUndoStack();
+
+  const defaultState: State = {
+    count: 0,
+    deep: ignoreState({
+      nest: true,
+    }),
+    array: ignoreState([
+      {
+        amount: 1,
+      },
+      {
+        amount: 2,
+      },
+    ]),
+    date: new Date(),
+    users: ignoreState({
+      "1-id": {
+        name: "asdasd",
+        email: "asdasd@john.com",
+      },
+      "2-id": {
+        name: "asdd",
+        email: "asdasd@john.com",
+      },
+    }),
   };
 
   return lape(defaultState);
