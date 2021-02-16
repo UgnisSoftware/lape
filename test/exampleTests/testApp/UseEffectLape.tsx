@@ -1,7 +1,7 @@
 import * as React from "react";
 import state from "./state";
 import { connect, useLape } from "lape";
-import { useEffectLape } from "../../../src/hook/hook";
+import { useLapeEffect } from "../../../src/hook/hook";
 
 const DeriveLocalState = () => {
   const localState = useLape({
@@ -11,7 +11,7 @@ const DeriveLocalState = () => {
     state.count += 1;
   };
 
-  useEffectLape(() => {
+  useLapeEffect(() => {
     localState.count = state.count
   })
 

@@ -9,7 +9,7 @@ export const useLape = <T extends {}>(initialState: T): T => {
   return proxify(state);
 };
 
-export const useEffectLape = (callback) => {
+export const useLapeEffect = (callback) => {
   useMemo(() => {
     const newCallback = () => {
       ConnectManager.startTracking(newCallback);
