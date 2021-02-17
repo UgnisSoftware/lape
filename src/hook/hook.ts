@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
 import { proxify } from "../proxify";
 import ConnectManager from "../connect/ConnectManager";
-import { lape } from "lape/index";
 
 export const useLape = <T extends {}>(initialState: T): T => {
   const state = useMemo(() => initialState, []);
@@ -26,7 +25,7 @@ export const lapeTrackUseState = () => {
   // @ts-ignore
   React.useState = <S>(initialState: S): ReturnType<typeof originalUseState> => {
     const [state, updateState] = originalUseState(initialState);
-    const lapeWatcher = useMemo(() => lape({ count: 0 }), []);
+    const lapeWatcher = useMemo(() => proxify({ count: 0 }), []);
 
     lapeWatcher.count;
     const updateStateWrapped: typeof updateState = (newState) => {
