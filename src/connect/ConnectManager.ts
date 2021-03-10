@@ -15,9 +15,22 @@ class ConnectManager {
     Emitter.listenSetEvents(this.onSet);
   }
 
+  getCurrentListener = () => {
+    if (this.forceRenders.length) {
+      return this.forceRenders[this.forceRenders.length - 1];
+    }
+  };
+
   startTracking = (forceRender: ForceRender) => {
     this.forceRenders.push(forceRender);
     this.stateDependencies.set(forceRender, new Map());
+  };
+
+  continueTracking = (forceRender: ForceRender) => {
+    this.forceRenders.push(forceRender);
+    if (!this.stateDependencies.has(forceRender)) {
+      this.stateDependencies.set(forceRender, new Map());
+    }
   };
 
   stopTracking = () => {

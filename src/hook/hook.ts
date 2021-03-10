@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
-import { proxify, trackAll } from "../proxify";
+import { proxify } from "../proxify";
 import ConnectManager from "../connect/ConnectManager";
-import Emitter from "../Emitter";
 
 export const useLape = <T extends {}>(initialState: T): T => {
   const state = useMemo(() => initialState, []);
@@ -27,12 +26,12 @@ export const lapeTrackUseState = () => {
   React.useState = <S>(initialState: S): ReturnType<typeof originalUseState> => {
     const [state, updateState] = originalUseState(initialState);
 
-    const trackingObj = useMemo(() => ({}), []);
-    Emitter.triggerGetListeners(trackingObj, trackAll);
-
+    const currentRender = useMemo(() => ConnectManager.getCurrentListener(), []);
     const updateStateWrapped: typeof updateState = (newState) => {
-      Emitter.triggerSetListeners(trackingObj, 'any', 'any')
-
+      if (currentRender && !ConnectManager.getCurrentListener()) {
+        ConnectManager.continueTracking(currentRender);
+        setTimeout(() => ConnectManager.removeTracking(currentRender), 0);
+      }
       return updateState(newState);
     };
 
