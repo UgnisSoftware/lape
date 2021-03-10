@@ -31,7 +31,7 @@ export const lapeTrackUseState = () => {
       () => (newState) => {
         if (currentRender && !ConnectManager.getCurrentListener()) {
           ConnectManager.continueTracking(currentRender);
-          setTimeout(() => ConnectManager.removeTracking(currentRender), 0);
+          setTimeout(() => ConnectManager.stopTracking(), 0);
         }
         return updateState(newState);
       },

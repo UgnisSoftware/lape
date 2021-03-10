@@ -28,9 +28,6 @@ class ConnectManager {
 
   continueTracking = (forceRender: ForceRender) => {
     this.forceRenders.push(forceRender);
-    if (!this.stateDependencies.has(forceRender)) {
-      this.stateDependencies.set(forceRender, new Map());
-    }
   };
 
   stopTracking = () => {
@@ -46,6 +43,10 @@ class ConnectManager {
       return;
     }
     const forceRender = this.forceRenders[this.forceRenders.length - 1];
+
+    if (!this.stateDependencies.has(forceRender)) {
+      this.stateDependencies.set(forceRender, new Map());
+    }
 
     const targetCallbacks = this.stateDependencies.get(forceRender).get(target);
 
