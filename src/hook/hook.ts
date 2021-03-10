@@ -27,13 +27,16 @@ export const lapeTrackUseState = () => {
     const [state, updateState] = originalUseState(initialState);
 
     const currentRender = useMemo(() => ConnectManager.getCurrentListener(), []);
-    const updateStateWrapped: typeof updateState = (newState) => {
-      if (currentRender && !ConnectManager.getCurrentListener()) {
-        ConnectManager.continueTracking(currentRender);
-        setTimeout(() => ConnectManager.removeTracking(currentRender), 0);
-      }
-      return updateState(newState);
-    };
+    const updateStateWrapped: typeof updateState = useMemo(
+      () => (newState) => {
+        if (currentRender && !ConnectManager.getCurrentListener()) {
+          ConnectManager.continueTracking(currentRender);
+          setTimeout(() => ConnectManager.removeTracking(currentRender), 0);
+        }
+        return updateState(newState);
+      },
+      []
+    );
 
     return [state, updateStateWrapped];
   };
