@@ -6,7 +6,7 @@ export const deletedValue = Symbol("deleted");
 const allProxies = new WeakSet();
 const ignoredValues = new WeakSet();
 
-export const ignoreState = (value: any) => {
+export const ignoreState = <T extends object>(value: T) => {
   ignoredValues.add(value);
   return value;
 };
