@@ -19,6 +19,7 @@ describe("WARNING: State is shared if not using Lape testing utils", () => {
     expect(screen.getByText("Simple counter: 1")).toBeInTheDocument();
   });
 
+  // without using lapeTrackAllChanges/lapeResetAllChanges global state is shared across tests
   test("Increments count by one again", async () => {
     render(<SimpleCounter />);
 
