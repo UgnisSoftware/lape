@@ -1,5 +1,5 @@
 import React, { Attributes, ComponentClass, FunctionComponent, ReactElement } from "react";
-import { connect } from "lape";
+import { connect } from "../";
 
 const allReactComponents = new WeakMap<
   FunctionComponent<any> | ComponentClass<any>,
