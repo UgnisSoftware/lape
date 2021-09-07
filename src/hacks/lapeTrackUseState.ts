@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import ConnectManager from "lape/connect/ConnectManager";
+import ConnectManager from "../connect/ConnectManager";
 
 export const lapeTrackUseState = () => {
   const originalUseState = React.useState;
