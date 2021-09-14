@@ -1,12 +1,13 @@
 {
   "name": "lape",
-  "version": "6.2.3",
+  "version": "6.2.4",
   "description": "State manager for React",
   "main": "./dist/commonjs/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist/"
+    "dist/",
+    "jsx-runtime/"
   ],
   "scripts": {
     "prepare": "npm run build & npm run copy-runtime",
