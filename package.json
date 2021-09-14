@@ -1,6 +1,6 @@
 {
   "name": "lape",
-  "version": "6.2.2",
+  "version": "6.2.3",
   "description": "State manager for React",
   "main": "./dist/commonjs/index.js",
   "module": "./dist/index.js",
@@ -9,8 +9,9 @@
     "dist/"
   ],
   "scripts": {
-    "prepare": "npm run build",
+    "prepare": "npm run build & npm run copy-runtime",
     "build": "tsc && tsc --outDir dist/commonjs --target ES5 --module commonjs --declaration false",
+    "copy-runtime": "copyfiles -f \"./dist/jsx-runtime/*\" jsx-runtime",
     "test": "jest"
   },
   "repository": {
@@ -29,13 +30,14 @@
     "@types/jest": "26.0.20",
     "@types/react": "17.0.2",
     "@types/react-dom": "17.0.1",
+    "copyfiles": "^2.4.1",
     "jest": "26.6.3",
     "prettier": "2.2.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "typescript": "4.1.5",
     "ts-jest": "26.5.1",
-    "tslint": "6.1.3"
+    "tslint": "6.1.3",
+    "typescript": "4.1.5"
   },
   "jest": {
     "preset": "ts-jest",
