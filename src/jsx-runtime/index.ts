@@ -10,7 +10,7 @@ export const jsx = <P extends {}>(
   type: FunctionComponent<P> | ComponentClass<P> | string,
   props?: (Attributes & P) | null
 ): ReactElement<P> => {
-  if (typeof type !== "function" ) {
+  if (typeof type !== "function") {
     return React.createElement(type, props);
   }
   if (allReactComponents.has(type)) {
@@ -24,12 +24,17 @@ export const jsx = <P extends {}>(
 export const jsxOld = <P extends {}>(
   type: FunctionComponent<P> | ComponentClass<P> | string,
   props?: (Attributes & P) | null,
-  children?: ReactNode[]
+  ...children: ReactNode[]
 ): ReactElement<P> => {
-  if (children) {
-    return jsx(type, { ...props, children });
+  if (typeof type !== "function") {
+    return React.createElement(type, props, ...children);
   }
-  return jsx(type, props);
+  if (allReactComponents.has(type)) {
+    return React.createElement(allReactComponents.get(type), props, ...children);
+  }
+  const newComponent = connect(type);
+  allReactComponents.set(type, newComponent);
+  return React.createElement(newComponent, props, ...children);
 };
 
 export { jsx as jsxs };
