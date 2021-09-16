@@ -10,7 +10,7 @@ export const jsx = <P extends {}>(
   type: FunctionComponent<P> | ComponentClass<P> | string,
   props?: (Attributes & P) | null
 ): ReactElement<P> => {
-  if (typeof type === "string") {
+  if (typeof type !== "function" ) {
     return React.createElement(type, props);
   }
   if (allReactComponents.has(type)) {
