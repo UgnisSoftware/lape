@@ -1,4 +1,5 @@
 import React, { Attributes, ComponentClass, FunctionComponent, ReactElement, ReactNode } from "react";
+export { Fragment } from "react";
 import { connect } from "../";
 
 const allReactComponents = new WeakMap<
