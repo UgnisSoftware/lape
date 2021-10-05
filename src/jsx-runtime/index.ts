@@ -9,17 +9,19 @@ const allReactComponents = new WeakMap<
 
 export const jsx = <P extends {}>(
   type: FunctionComponent<P> | ComponentClass<P> | string,
-  props?: (Attributes & P) | null
+  props?: (Attributes & P) | null,
+  key?: string
 ): ReactElement<P> => {
+  const newProps = key ? { ...props, key } : props;
   if (typeof type !== "function") {
-    return React.createElement(type, props);
+    return React.createElement(type, newProps);
   }
   if (allReactComponents.has(type)) {
-    return React.createElement(allReactComponents.get(type), props);
+    return React.createElement(allReactComponents.get(type), newProps);
   }
   const newComponent = connect(type);
   allReactComponents.set(type, newComponent);
-  return React.createElement(newComponent, props);
+  return React.createElement(newComponent, newProps);
 };
 
 export const jsxOld = <P extends {}>(
@@ -39,3 +41,4 @@ export const jsxOld = <P extends {}>(
 };
 
 export { jsx as jsxs };
+export { jsxOld as createElement };
