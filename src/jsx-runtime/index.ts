@@ -23,6 +23,21 @@ export const jsx = <P extends {}>(
   return (runtime as any).jsx(newComponent, ...rest);
 };
 
+export const jsxs = <P extends {}>(
+  type: FunctionComponent<P> | ComponentClass<P> | string,
+  ...rest
+): ReactElement<P> => {
+  if (typeof type !== "function") {
+    return (runtime as any).jsxs(type, ...rest);
+  }
+  if (allReactComponents.has(type)) {
+    return (runtime as any).jsxs(allReactComponents.get(type), ...rest);
+  }
+  const newComponent = connect(type);
+  allReactComponents.set(type, newComponent);
+  return (runtime as any).jsxs(newComponent, ...rest);
+};
+
 export const jsxOld = <P extends {}>(
   type: FunctionComponent<P> | ComponentClass<P> | string,
   props?: (Attributes & P) | null,
@@ -39,5 +54,4 @@ export const jsxOld = <P extends {}>(
   return React.createElement(newComponent, props, ...children);
 };
 
-export { jsx as jsxs };
 export { jsxOld as createElement };
