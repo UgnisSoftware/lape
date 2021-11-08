@@ -12,7 +12,7 @@ export const jsx = <P extends {}>(
   props?: (Attributes & P) | null,
   key?: string
 ): ReactElement<P> => {
-  const newProps = key ? { ...props, key } : props;
+  const newProps = key !== undefined ? { ...props, key } : props;
   if (typeof type !== "function") {
     return React.createElement(type, newProps);
   }
