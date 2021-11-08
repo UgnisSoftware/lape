@@ -1,6 +1,6 @@
 {
   "name": "lape",
-  "version": "6.3.6",
+  "version": "6.3.7",
   "description": "State manager for React",
   "main": "./dist/commonjs/index.js",
   "module": "./dist/index.js",
@@ -10,7 +10,7 @@
     "jsx-runtime/"
   ],
   "scripts": {
-    "prepare": "npm run build & npm run copy-runtime",
+    "prepare": "npm run build && npm run copy-runtime",
     "build": "tsc && tsc --outDir dist/commonjs --target ES5 --module commonjs --declaration false",
     "copy-runtime": "copyfiles -f \"./dist/jsx-runtime/*\" jsx-runtime && copyfiles -f \"./dist/commonjs/jsx-runtime/*\" jsx-runtime ",
     "test": "jest"
