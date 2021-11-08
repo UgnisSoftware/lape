@@ -1,5 +1,6 @@
 import React, { Attributes, ComponentClass, FunctionComponent, ReactElement, ReactNode } from "react";
 export { Fragment } from "react";
+import runtime from "react/jsx-runtime";
 import { connect } from "../";
 
 const allReactComponents = new WeakMap<
@@ -9,19 +10,17 @@ const allReactComponents = new WeakMap<
 
 export const jsx = <P extends {}>(
   type: FunctionComponent<P> | ComponentClass<P> | string,
-  props?: (Attributes & P) | null,
-  key?: string
+  ...rest
 ): ReactElement<P> => {
-  const newProps = key !== undefined ? { ...props, key } : props;
   if (typeof type !== "function") {
-    return React.createElement(type, newProps);
+    return (runtime as any).jsx(type, ...rest);
   }
   if (allReactComponents.has(type)) {
-    return React.createElement(allReactComponents.get(type), newProps);
+    return (runtime as any).jsx(allReactComponents.get(type), ...rest);
   }
   const newComponent = connect(type);
   allReactComponents.set(type, newComponent);
-  return React.createElement(newComponent, newProps);
+  return (runtime as any).jsx(newComponent, ...rest);
 };
 
 export const jsxOld = <P extends {}>(
