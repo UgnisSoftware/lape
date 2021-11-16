@@ -23,3 +23,40 @@ export const lapeTrackUseState = () => {
     return [state, updateStateWrapped];
   };
 };
+
+export const lapeSyncInternalUseState = () => {
+  (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher.internalCurrent = (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher.current;
+  Object.defineProperty(
+    (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher,
+    "current",
+    {
+      get() {
+        const originalUseState = this.internalCurrent.useState;
+        return {
+          ...this.internalCurrent,
+          useState: <S extends any>(initialState: S): ReturnType<typeof originalUseState> => {
+            const [state, updateState] = originalUseState(initialState);
+            const currentRender = ConnectManager.getCurrentListener();
+            const updateStateWrapped = useMemo(
+              () => (newState: any) => {
+                const a = updateState(newState);
+                if (currentRender && !ConnectManager.getCurrentListener()) {
+                  currentRender();
+                }
+                return a;
+              },
+              []
+            );
+
+            return [state, updateStateWrapped];
+          },
+        };
+      },
+      set(newValue) {
+        this.internalCurrent = newValue;
+      },
+      enumerable: true,
+      configurable: true,
+    }
+  );
+};
