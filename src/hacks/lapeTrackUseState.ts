@@ -39,9 +39,13 @@ export const lapeSyncInternalUseState = () => {
             const currentRender = ConnectManager.getCurrentListener();
             const updateStateWrapped = useMemo(
               () => (newState: any) => {
+                const shouldTrack = currentRender && !ConnectManager.getCurrentListener();
+                if (shouldTrack) {
+                  ConnectManager.continueTracking(currentRender);
+                }
                 const a = updateState(newState);
-                if (currentRender && !ConnectManager.getCurrentListener()) {
-                  currentRender();
+                if (shouldTrack) {
+                  setTimeout(() => ConnectManager.stopTracking(), 0);
                 }
                 return a;
               },
