@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import ConnectManager from "../connect/ConnectManager";
+import { useLape } from "lape/hook/hook";
 
 export const lapeTrackUseState = () => {
   const originalUseState = React.useState;
@@ -35,24 +36,19 @@ export const lapeSyncInternalUseState = () => {
         return {
           ...this.internalCurrent,
           useState: <S extends any>(initialState: S): ReturnType<typeof originalUseState> => {
-            const [state, updateState] = originalUseState(initialState);
-            const currentRender = ConnectManager.getCurrentListener();
-            const updateStateWrapped = useMemo(
-              () => (newState: any) => {
-                const shouldTrack = currentRender && !ConnectManager.getCurrentListener();
-                if (shouldTrack) {
-                  ConnectManager.continueTracking(currentRender);
+            const initState = useMemo(() => (typeof initialState === "function" ? initialState() : initialState), []);
+            const state = useLape({ reference: initState });
+            const updateState = useMemo(
+              () => (update) => {
+                if (typeof update === "function") {
+                  state.reference = update(state.reference);
+                } else {
+                  state.reference = update;
                 }
-                const a = updateState(newState);
-                if (shouldTrack) {
-                  setTimeout(() => ConnectManager.stopTracking(), 0);
-                }
-                return a;
               },
               []
             );
-
-            return [state, updateStateWrapped];
+            return [state.reference, updateState];
           },
         };
       },
