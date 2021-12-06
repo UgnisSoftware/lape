@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import ConnectManager from "../connect/ConnectManager";
-import { useLape } from "lape/hook/hook";
+import { useLape } from "../hook/hook";
 
 export const lapeTrackUseState = () => {
   const originalUseState = React.useState;
