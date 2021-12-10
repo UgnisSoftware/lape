@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import ConnectManager from "../connect/ConnectManager";
 import { useLape } from "../hook/hook";
-import { ignoreState } from "lape/proxify";
+import { ignoreState } from "../proxify";
 
 export const lapeTrackUseState = () => {
   const originalUseState = React.useState;

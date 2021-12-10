@@ -7,6 +7,9 @@ const allProxies = new WeakSet();
 const ignoredValues = new WeakSet();
 
 export const ignoreState = <T extends object>(value: T) => {
+  if (!valueIsObject(value)) {
+    return value;
+  }
   ignoredValues.add(value);
   return value;
 };
