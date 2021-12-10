@@ -1,4 +1,3 @@
-import * as React from "react";
 import state from "./state";
 import { connect } from "lape";
 

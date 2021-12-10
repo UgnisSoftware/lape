@@ -16,6 +16,10 @@ const valueIsObject = (value: any) =>
   value !== null &&
   !(value instanceof Date) &&
   !(value instanceof Blob) &&
+  !(value instanceof Map) &&
+  !(value instanceof WeakMap) &&
+  !(value instanceof Set) &&
+  !(value instanceof WeakSet) &&
   !isValidElement(value) &&
   !ignoredValues.has(value);
 

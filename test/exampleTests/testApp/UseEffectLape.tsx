@@ -1,4 +1,3 @@
-import * as React from "react";
 import state from "./state";
 import { connect, useLape } from "lape";
 import { useLapeEffect } from "../../../src/hook/hook";

@@ -1,4 +1,3 @@
-import * as React from "react";
 import { connect, recordUndo, redo, undo, useLape } from "lape";
 
 const STACK_ID = "counts";
