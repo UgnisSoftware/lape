@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import ConnectManager from "../connect/ConnectManager";
 import { useLape } from "../hook/hook";
+import { ignoreState } from "lape/proxify";
 
 export const lapeTrackUseState = () => {
   const originalUseState = React.useState;
@@ -37,7 +38,7 @@ export const lapeSyncInternalUseState = () => {
           ...this.internalCurrent,
           useState: <S extends any>(initialState: S): ReturnType<typeof originalUseState> => {
             const initState = useMemo(() => (typeof initialState === "function" ? initialState() : initialState), []);
-            const state = useLape({ reference: initState });
+            const state = useLape({ reference: ignoreState(initState) });
             const updateState = useMemo(
               () => (update) => {
                 if (typeof update === "function") {
