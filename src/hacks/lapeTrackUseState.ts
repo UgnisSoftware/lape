@@ -42,9 +42,9 @@ export const lapeSyncInternalUseState = () => {
             const updateState = useMemo(
               () => (update) => {
                 if (typeof update === "function") {
-                  state.reference = update(state.reference);
+                  state.reference = ignoreState(update(state.reference));
                 } else {
-                  state.reference = update;
+                  state.reference = ignoreState(update);
                 }
               },
               []
