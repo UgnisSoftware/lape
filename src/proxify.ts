@@ -73,7 +73,7 @@ const handler = {
 };
 
 export const proxify = <T extends object>(state: T): T => {
-  if (allProxies.has(state)) {
+  if (allProxies.has(state) || !valueIsObject(state)) {
     return state;
   }
   for (let [key, value] of Object.entries(state)) {
