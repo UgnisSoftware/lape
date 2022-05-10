@@ -1,6 +1,6 @@
 # Lape
 
-[https://ugnissoftware.github.io/lape/](ugnissoftware.github.io/lape/)
+[https://ugnissoftware.github.io/lape/](https://ugnissoftware.github.io/lape/)
 
 Simple state manager for React built on Proxies.
 
