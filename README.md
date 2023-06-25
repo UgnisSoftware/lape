@@ -1,3 +1,5 @@
+ARCHIVED: Use [valtio](https://github.com/pmndrs/valtio) or [legend-state](https://github.com/LegendApp/legend-state) instead.
+
 # Lape
 
 [https://ugnissoftware.github.io/lape/](https://ugnissoftware.github.io/lape/)
